@@ -2,8 +2,8 @@ export default function Home() {
   return (
     <main>
       <div>
-        <button type='button' >Open Gallery</button>
+        <button type="button">Open Gallery</button>
       </div>
     </main>
-  )
+  );
 }

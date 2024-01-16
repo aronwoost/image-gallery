@@ -14,7 +14,6 @@ const IMAGES = [
 const ImageGalleryContainer = ({ onClose }: { onClose: () => void }) => {
   return (
     <div className={styles.container}>
-      <p>hello</p>
       <ImageGallery index={0} images={IMAGES} onClose={onClose} />
     </div>
   );

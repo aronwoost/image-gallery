@@ -15,6 +15,7 @@ const IMAGES = [
 
 export default function Home() {
   const [galleryOpen, setGalleryOpen] = useState(false);
+  const [imageIndex, setImageIndex] = useState(0);
 
   return (
     <main>
@@ -22,11 +23,20 @@ export default function Home() {
         <button type="button" onClick={() => setGalleryOpen(true)}>
           Open Gallery
         </button>
+        <button
+          type="button"
+          onClick={() => {
+            setImageIndex(2);
+            setGalleryOpen(true);
+          }}
+        >
+          Open Gallery with third image
+        </button>
       </div>
       {galleryOpen && (
         <div className={styles.container}>
           <ImageGallery
-            index={0}
+            index={imageIndex}
             images={IMAGES}
             onClose={() => setGalleryOpen(false)}
           />

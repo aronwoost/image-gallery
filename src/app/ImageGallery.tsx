@@ -207,7 +207,9 @@ const ImageGallery = ({
           [styles.disablePointerEvents]: pinchingInProgress,
         })}
       >
-        <span>{`${imageIndex + 1} ${imagesAndVideos.length}`}</span>
+        <span
+          className={styles.counter}
+        >{`${imageIndex + 1} ${imagesAndVideos.length}`}</span>
         <button type="button" onClick={close}>
           close
         </button>

@@ -19,7 +19,7 @@ export default function Home() {
 
   return (
     <main>
-      <div>
+      <div className={styles.buttons}>
         <button type="button" onClick={() => setGalleryOpen(true)}>
           Open Gallery
         </button>
@@ -34,13 +34,11 @@ export default function Home() {
         </button>
       </div>
       {galleryOpen && (
-        <div className={styles.container}>
-          <ImageGallery
-            index={imageIndex}
-            images={IMAGES}
-            onClose={() => setGalleryOpen(false)}
-          />
-        </div>
+        <ImageGallery
+          index={imageIndex}
+          images={IMAGES}
+          onClose={() => setGalleryOpen(false)}
+        />
       )}
     </main>
   );

@@ -8,6 +8,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
+      <meta property="version" content={process.env.commit} />
       <body>{children}</body>
     </html>
   );

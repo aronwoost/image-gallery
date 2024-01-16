@@ -262,9 +262,38 @@ const ImageGallery = ({
             [styles.oneImage]: imagesAndVideos.length === 1,
           })}
         >
-          {/* {imagesAndVideos.length > 1 && (
-            <Fragment>prev button | next button</Fragment>
-          )} */}
+          {imagesAndVideos.length > 1 && (
+            <Fragment>
+              <button
+                type="button"
+                className={cx(
+                  styles.navigationButton,
+                  styles.interface,
+                  styles.previous,
+                  {
+                    [styles.disablePointerEvents]: pinchingInProgress,
+                  },
+                )}
+                onClick={prevImage}
+              >
+                PREV
+              </button>
+              <button
+                type="button"
+                className={cx(
+                  styles.navigationButton,
+                  styles.interface,
+                  styles.next,
+                  {
+                    [styles.disablePointerEvents]: pinchingInProgress,
+                  },
+                )}
+                onClick={nextImage}
+              >
+                NEXT
+              </button>
+            </Fragment>
+          )}
           <div className={styles.swipeContainer} ref={slideContainerRef}>
             {imagesAndVideos.map((imageOrVideo, index) => (
               <div

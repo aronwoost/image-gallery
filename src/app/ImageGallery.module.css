@@ -64,14 +64,9 @@
 }
 
 .navigationButton {
-  display: none;
+  display: flex;
   position: absolute;
-  top: calc(50% - var(--ImageGallery-navigation-size) / 2);
-  background-color: var(--color-conversion-neutral-inverse);
-
-  @media (--screen-width-large) {
-    display: flex;
-  }
+  top: calc(50% - 2.75rem / 2);
 
   /* svg {
     pointer-events: none;

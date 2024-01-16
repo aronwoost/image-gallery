@@ -76,7 +76,6 @@ const ImageGallery = ({
 
     const element = slideContainerRef.current;
 
-    /* istanbul ignore next */
     const observer = new IntersectionObserver(
       (entries) => {
         if (rotationInProgress.current) {

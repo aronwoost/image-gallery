@@ -252,12 +252,6 @@ const ImageGallery = ({
         })}
       >
         <span>{`${imageIndex + 1} ${imagesAndVideos.length}`}</span>
-        {/* <PrimaryInverseButton
-          icon={<CloseIcon />}
-          size={ButtonSize.Size300}
-          label={formatMessage({ id: "close" })}
-          onClick={close}
-        /> */}
         <button type="button" onClick={close}>
           close
         </button>

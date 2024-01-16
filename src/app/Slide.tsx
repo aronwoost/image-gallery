@@ -4,15 +4,7 @@ import PinchZoom from "./pinchzoom";
 
 import styles from "./Slide.module.css";
 
-const Slide = ({
-  image,
-  loadImage,
-  active,
-}: {
-  image: string;
-  loadImage: boolean;
-  active: boolean;
-}) => {
+const Slide = ({ image, active }: { image: string; active: boolean }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
 
   const ref = useRef<HTMLDivElement | null>(null);
@@ -40,13 +32,12 @@ const Slide = ({
   return (
     <div ref={ref} className={styles.container}>
       <div className={styles.pinchZoom}>
-        {loadImage && (
-          <img
-            src={image}
-            className={styles.image}
-            onLoad={() => setImageLoaded(true)}
-          />
-        )}
+        <img
+          src={image}
+          className={styles.image}
+          loading="lazy"
+          onLoad={() => setImageLoaded(true)}
+        />
       </div>
     </div>
   );

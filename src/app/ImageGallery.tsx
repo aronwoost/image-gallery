@@ -30,43 +30,10 @@ const ImageGallery = ({
 
   const rotationInProgress = useRef(false);
 
-  // We use a ref additionally to the state. So that we always get an updated
-  // result when called from the IntersectionObserver handler. If we would call
-  // loadedImages in the IntersectionObserver handler we would receive an
-  // outdated result.
-  const loadedImagesRef = useRef(
-    new Array(images.length)
-      .fill(0)
-      // mark current image to be loaded
-      .map((item, index) => index === initialIndex),
-  );
-
-  const [loadedImages, setLoadedImages] = useState(loadedImagesRef.current);
-
   const imagesAndVideos = images;
   const slideRefs = useRef(
     imagesAndVideos.map(() => createRef<HTMLDivElement>()),
   );
-
-  const updateImageToLoad = (index: number) => {
-    // create new array, otherwise setLoadedImages() will not trigger re-render
-    const updatedLoadedImages = [...loadedImagesRef.current];
-
-    // prev image
-    if (typeof updatedLoadedImages[index - 1] !== "undefined") {
-      updatedLoadedImages[index - 1] = true;
-    }
-
-    updatedLoadedImages[index] = true;
-
-    // next image
-    if (typeof updatedLoadedImages[index + 1] !== "undefined") {
-      updatedLoadedImages[index + 1] = true;
-    }
-
-    loadedImagesRef.current = updatedLoadedImages;
-    setLoadedImages(loadedImagesRef.current);
-  };
 
   const slideContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -120,13 +87,6 @@ const ImageGallery = ({
           // used to determine for image being changed
           if (entry.intersectionRatio === 1) {
             changeImage(
-              parseInt((entry.target as HTMLElement).dataset.index ?? "", 10),
-            );
-          }
-          // used to determine for image being in the viewport and should be
-          // loaded
-          if (entry.intersectionRatio > 0) {
-            updateImageToLoad(
               parseInt((entry.target as HTMLElement).dataset.index ?? "", 10),
             );
           }
@@ -302,11 +262,7 @@ const ImageGallery = ({
                 data-index={index}
                 key={`slide-${imageOrVideo}`}
               >
-                <Slide
-                  image={imageOrVideo}
-                  loadImage={loadedImages[index]}
-                  active={imageIndex === index}
-                />
+                <Slide image={imageOrVideo} active={imageIndex === index} />
               </div>
             ))}
           </div>

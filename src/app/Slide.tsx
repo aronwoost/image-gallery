@@ -1,7 +1,7 @@
-import React, { memo, useEffect, useRef, useState } from "react";
+import React, { memo, useEffect, useRef, useState } from 'react';
 
-import PinchZoom from "./pinchzoom";
-import styles from "./Slide.module.css";
+import PinchZoom from './pinchzoom';
+import styles from './Slide.module.css';
 
 const Slide = ({ image, active }: { image: string; active: boolean }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -21,7 +21,7 @@ const Slide = ({ image, active }: { image: string; active: boolean }) => {
       // device has PointerEvent support
       window.PointerEvent &&
       // device is a touch device
-      window.matchMedia("(pointer: coarse)")?.matches &&
+      window.matchMedia('(pointer: coarse)')?.matches &&
       // pinchZoom has not already been initialized
       !pinchZoomRef.current
     ) {

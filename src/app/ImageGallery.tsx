@@ -1,8 +1,8 @@
-import cx from "classnames";
-import React, { createRef, Fragment, useEffect, useRef, useState } from "react";
+import cx from 'classnames';
+import React, { createRef, Fragment, useEffect, useRef, useState } from 'react';
 
-import styles from "./ImageGallery.module.css";
-import Slide from "./Slide";
+import styles from './ImageGallery.module.css';
+import Slide from './Slide';
 
 const preventEvent = (event: Event) => event.preventDefault();
 
@@ -27,7 +27,7 @@ const ImageGallery = ({
 
   const imagesAndVideos = images;
   const slideRefs = useRef(
-    imagesAndVideos.map(() => createRef<HTMLDivElement>()),
+    imagesAndVideos.map(() => createRef<HTMLDivElement>())
   );
 
   const slideContainerRef = useRef<HTMLDivElement | null>(null);
@@ -82,7 +82,7 @@ const ImageGallery = ({
           // used to determine for image being changed
           if (entry.intersectionRatio === 1) {
             changeImage(
-              parseInt((entry.target as HTMLElement).dataset.index ?? "", 10),
+              parseInt((entry.target as HTMLElement).dataset.index ?? '', 10)
             );
           }
         });
@@ -92,15 +92,15 @@ const ImageGallery = ({
         // having top/bottom margin of 1px fixes an issue, that the
         // IntersectionObserver doesn't kick in, when height is float
         // instead of int (315.5 vs 315).
-        rootMargin: "1px 0px",
+        rootMargin: '1px 0px',
         threshold: [0.05, 1],
-      },
+      }
     );
 
-    element.addEventListener("pinchingStarted", handlePinchingStarted);
-    element.addEventListener("pinchingEnded", handlePinchingEnded);
-    element.addEventListener("changeOpacity", handleChangeOpacity);
-    element.addEventListener("close", handleClose);
+    element.addEventListener('pinchingStarted', handlePinchingStarted);
+    element.addEventListener('pinchingEnded', handlePinchingEnded);
+    element.addEventListener('changeOpacity', handleChangeOpacity);
+    element.addEventListener('close', handleClose);
 
     slideRefs.current.forEach(({ current }) => {
       if (current) observer.observe(current);
@@ -108,10 +108,10 @@ const ImageGallery = ({
 
     // eslint-disable-next-line consistent-return
     return () => {
-      element.removeEventListener("pinchingStarted", handlePinchingStarted);
-      element.removeEventListener("pinchingEnded", handlePinchingEnded);
-      element.removeEventListener("changeOpacity", handleChangeOpacity);
-      element.removeEventListener("close", handleClose);
+      element.removeEventListener('pinchingStarted', handlePinchingStarted);
+      element.removeEventListener('pinchingEnded', handlePinchingEnded);
+      element.removeEventListener('changeOpacity', handleChangeOpacity);
+      element.removeEventListener('close', handleClose);
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
       slideRefs.current.forEach(({ current }) => {
@@ -151,35 +151,35 @@ const ImageGallery = ({
         const slide = slideRefs.current[imageIndexRef.current].current;
 
         if (slide) {
-          slide.scrollIntoView({ block: "nearest", inline: "start" });
+          slide.scrollIntoView({ block: 'nearest', inline: 'start' });
         }
       }
 
       // Re-enable IntersectionObserver
       rotationInProgress.current = false;
 
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
     };
 
     // Wait for the resize event. Only at that moment the new height is actually set.
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
   };
 
   useEffect(() => {
     // prevent Mobile Safari from sometimes(TM) capturing the pinch/zoom gesture
-    document.addEventListener("gesturestart", preventEvent);
+    document.addEventListener('gesturestart', preventEvent);
 
-    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener('keydown', handleKeyDown);
 
-    window.addEventListener("orientationchange", handleOrientationChange);
+    window.addEventListener('orientationchange', handleOrientationChange);
 
     // eslint-disable-next-line consistent-return
     return () => {
-      document.removeEventListener("gesturestart", preventEvent);
+      document.removeEventListener('gesturestart', preventEvent);
 
-      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener('keydown', handleKeyDown);
 
-      window.removeEventListener("orientationchange", handleOrientationChange);
+      window.removeEventListener('orientationchange', handleOrientationChange);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -192,7 +192,7 @@ const ImageGallery = ({
     const slide = slideRefs.current[imageIndex].current;
 
     if (slide) {
-      slide.scrollIntoView({ block: "nearest", inline: "start" });
+      slide.scrollIntoView({ block: 'nearest', inline: 'start' });
     }
   }, [imageIndex]);
 
@@ -228,7 +228,7 @@ const ImageGallery = ({
                   styles.previous,
                   {
                     [styles.disablePointerEvents]: pinchingInProgress,
-                  },
+                  }
                 )}
                 onClick={prevImage}
               >
@@ -242,7 +242,7 @@ const ImageGallery = ({
                   styles.next,
                   {
                     [styles.disablePointerEvents]: pinchingInProgress,
-                  },
+                  }
                 )}
                 onClick={nextImage}
               >

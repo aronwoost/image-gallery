@@ -28,7 +28,7 @@ const getSVG = () => {
   if (cachedSvg) {
     return cachedSvg;
   }
-  cachedSvg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  cachedSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
   return cachedSvg;
 };
 
@@ -46,8 +46,8 @@ class PinchZoom {
     this.isMultiplePointer = false;
     this.doubleTapTimeout = null;
 
-    this.naturalWidth = element.querySelector("img")?.naturalWidth;
-    this.naturalHeight = element.querySelector("img")?.naturalHeight;
+    this.naturalWidth = element.querySelector('img')?.naturalWidth;
+    this.naturalHeight = element.querySelector('img')?.naturalHeight;
 
     const viewportBounds = this.element.getBoundingClientRect();
 
@@ -69,7 +69,7 @@ class PinchZoom {
     this.onPointerUp = this.onPointerUp.bind(this);
     this.onPointerCancel = this.onPointerCancel.bind(this);
 
-    this.element.addEventListener("pointerdown", this.onPointerStart);
+    this.element.addEventListener('pointerdown', this.onPointerStart);
 
     // eslint-disable-next-line
     this.transformElement = this.element.children[0];
@@ -90,15 +90,15 @@ class PinchZoom {
     }
 
     this.element.setPointerCapture(event.pointerId);
-    this.element.addEventListener("pointermove", this.onPointerMove);
+    this.element.addEventListener('pointermove', this.onPointerMove);
     // We have to listen for "pointerleave" instead of "pointerup" event. Reason
     // is Mobile Safari. In Mobile Safari there is no pointerup fired when the
     // user release it's fingers above the browser chrome (address bar and
     // navigation bar at the bottom). Maybe this is fixed in iOS14.
-    this.element.addEventListener("pointerleave", this.onPointerUp);
-    this.element.addEventListener("pointercancel", this.onPointerCancel);
+    this.element.addEventListener('pointerleave', this.onPointerUp);
+    this.element.addEventListener('pointercancel', this.onPointerCancel);
 
-    this.element.dispatchEvent(new Event("pinchingStarted", { bubbles: true }));
+    this.element.dispatchEvent(new Event('pinchingStarted', { bubbles: true }));
   }
 
   onPointerMove(event) {
@@ -119,7 +119,7 @@ class PinchZoom {
     return this._onPointerMove(
       previousPointers,
       this.currentPointers,
-      onlyAllowVerticalScroll,
+      onlyAllowVerticalScroll
     );
   }
 
@@ -156,10 +156,10 @@ class PinchZoom {
       });
     } else if (this.scale === 1 && closePercentage >= 1) {
       // close gallery of image was dragged up/down over a threshold
-      this.element.dispatchEvent(new Event("close", { bubbles: true }));
+      this.element.dispatchEvent(new Event('close', { bubbles: true }));
     } else if (this.scale < 0.5) {
       // close gallery of image was scaled very small
-      this.element.dispatchEvent(new Event("close", { bubbles: true }));
+      this.element.dispatchEvent(new Event('close', { bubbles: true }));
     } else if (this.scale < 1.1) {
       // reset scale/position
       this.setTransform({ x: 0, y: 0, scale: 1, animate: true });
@@ -218,10 +218,10 @@ class PinchZoom {
 
     if (this.scale > 1) {
       // don't allow image swiping
-      this.element.style.touchAction = "none";
+      this.element.style.touchAction = 'none';
     } else {
       // allow image swiping
-      this.element.style.touchAction = "pan-x";
+      this.element.style.touchAction = 'pan-x';
     }
 
     if (!this.isMultiplePointer && !this.doubleTapTimeout) {
@@ -233,19 +233,19 @@ class PinchZoom {
     this.isMultiplePointer = false;
 
     this.element.releasePointerCapture(event.pointerId);
-    this.element.removeEventListener("pointermove", this.onPointerMove);
-    this.element.removeEventListener("pointerleave", this.onPointerUp);
-    this.element.removeEventListener("pointercancel", this.onPointerCancel);
+    this.element.removeEventListener('pointermove', this.onPointerMove);
+    this.element.removeEventListener('pointerleave', this.onPointerUp);
+    this.element.removeEventListener('pointercancel', this.onPointerCancel);
 
-    this.element.dispatchEvent(new Event("pinchingEnded", { bubbles: true }));
+    this.element.dispatchEvent(new Event('pinchingEnded', { bubbles: true }));
   }
 
   onPointerCancel() {
-    this.element.removeEventListener("pointermove", this.onPointerMove);
-    this.element.removeEventListener("pointerleave", this.onPointerUp);
-    this.element.removeEventListener("pointercancel", this.onPointerCancel);
+    this.element.removeEventListener('pointermove', this.onPointerMove);
+    this.element.removeEventListener('pointerleave', this.onPointerUp);
+    this.element.removeEventListener('pointercancel', this.onPointerCancel);
 
-    this.element.dispatchEvent(new Event("pinchingEnded", { bubbles: true }));
+    this.element.dispatchEvent(new Event('pinchingEnded', { bubbles: true }));
 
     this.currentPointers = [];
 
@@ -282,19 +282,19 @@ class PinchZoom {
     this._transform.a = scale;
 
     if (animate) {
-      this.transformElement.style.setProperty("transition-duration", "0.2s");
+      this.transformElement.style.setProperty('transition-duration', '0.2s');
     } else {
-      this.transformElement.style.setProperty("transition-duration", "0s");
+      this.transformElement.style.setProperty('transition-duration', '0s');
     }
 
     this.transformElement.style.setProperty(
-      "transform",
+      'transform',
       // translateZ(1000px) is needed to avoid a mobile safari rendering glitch
-      `translate(${this.x}px, ${this.y}px) scale(${this.scale}) translateZ(1000px)`,
+      `translate(${this.x}px, ${this.y}px) scale(${this.scale}) translateZ(1000px)`
     );
 
     if (scale === 1) {
-      const event = new Event("changeOpacity", { bubbles: true });
+      const event = new Event('changeOpacity', { bubbles: true });
 
       const yDistance = Math.abs(y);
       const closePercentage =
@@ -304,7 +304,7 @@ class PinchZoom {
     }
 
     if (scale < 1) {
-      const event = new Event("changeOpacity", { bubbles: true });
+      const event = new Event('changeOpacity', { bubbles: true });
       event.opacity = Math.max(scale, 0.5);
       this.element.dispatchEvent(event);
     }

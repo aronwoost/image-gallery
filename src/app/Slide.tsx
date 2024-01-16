@@ -43,14 +43,4 @@ const Slide = ({ image, active }: { image: string; active: boolean }) => {
   );
 };
 
-// Slide.propTypes = {
-//   image: shape({
-//     uri: string.isRequired,
-//     provisionalBase64Image: string,
-//   }).isRequired,
-//   loadImage: bool,
-//   active: bool,
-//   videoId: string,
-// };
-
 export default memo(Slide);

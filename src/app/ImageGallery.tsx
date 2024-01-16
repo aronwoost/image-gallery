@@ -1,11 +1,4 @@
-import React, {
-  Fragment,
-  useState,
-  useEffect,
-  useRef,
-  createRef,
-  KeyboardEventHandler,
-} from "react";
+import React, { Fragment, useState, useEffect, useRef, createRef } from "react";
 import cx from "classnames";
 
 import Slide from "./Slide";
@@ -270,20 +263,5 @@ const ImageGallery = ({
     </div>
   );
 };
-
-// ImageGallery.propTypes = {
-//   index: number,
-//   images: arrayOf(
-//     shape({
-//       uri: string.isRequired,
-//     }),
-//   ),
-//   video: shape({
-//     id: string.isRequired,
-//     previewImage: string.isRequired,
-//   }),
-//   onImageChange: func,
-//   onClose: func,
-// };
 
 export default ImageGallery;

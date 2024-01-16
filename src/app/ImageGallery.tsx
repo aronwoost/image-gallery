@@ -1,8 +1,10 @@
-import React, { Fragment, useState, useEffect, useRef, createRef } from "react";
 import cx from "classnames";
+import React, { createRef, Fragment, useEffect, useRef, useState } from "react";
 
-import Slide from "./Slide";
 import styles from "./ImageGallery.module.css";
+import Slide from "./Slide";
+
+const preventEvent = (event: Event) => event.preventDefault();
 
 const ImageGallery = ({
   index: initialIndex = 0,
@@ -59,6 +61,7 @@ const ImageGallery = ({
 
   const handlePinchingStarted = () => setPinchingInProgress(true);
   const handlePinchingEnded = () => setPinchingInProgress(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleChangeOpacity = (event: any) => setOpacity(event.opacity);
   const handleClose = () => onClose();
 
@@ -110,13 +113,13 @@ const ImageGallery = ({
       element.removeEventListener("changeOpacity", handleChangeOpacity);
       element.removeEventListener("close", handleClose);
 
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       slideRefs.current.forEach(({ current }) => {
         if (current) observer.unobserve(current);
       });
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slideContainerRef.current]);
-
-  const preventEvent = (event: Event) => event.preventDefault();
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.keyCode === 37) {
@@ -178,6 +181,7 @@ const ImageGallery = ({
 
       window.removeEventListener("orientationchange", handleOrientationChange);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

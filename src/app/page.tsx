@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import ImageGallery from "./ImageGallery";
 
+import ImageGallery from "./ImageGallery";
 import styles from "./page.module.css";
 
 const IMAGES = [

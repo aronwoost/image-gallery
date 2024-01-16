@@ -251,7 +251,16 @@ const ImageGallery = ({
           [styles.disablePointerEvents]: pinchingInProgress,
         })}
       >
-        close button and counter
+        <span>{`${imageIndex + 1} ${imagesAndVideos.length}`}</span>
+        {/* <PrimaryInverseButton
+          icon={<CloseIcon />}
+          size={ButtonSize.Size300}
+          label={formatMessage({ id: "close" })}
+          onClick={close}
+        /> */}
+        <button type="button" onClick={close}>
+          close
+        </button>
       </div>
       <div className={styles.component}>
         <div
@@ -259,9 +268,9 @@ const ImageGallery = ({
             [styles.oneImage]: imagesAndVideos.length === 1,
           })}
         >
-          {imagesAndVideos.length > 1 && (
+          {/* {imagesAndVideos.length > 1 && (
             <Fragment>prev button | next button</Fragment>
-          )}
+          )} */}
           <div className={styles.swipeContainer} ref={slideContainerRef}>
             {imagesAndVideos.map((imageOrVideo, index) => (
               <div

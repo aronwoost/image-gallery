@@ -13,7 +13,9 @@ export default function Home() {
           Open Gallery
         </button>
       </div>
-      {galleryOpen && <ImageGalleryContainer />}
+      {galleryOpen && (
+        <ImageGalleryContainer onClose={() => setGalleryOpen(false)} />
+      )}
     </main>
   );
 }

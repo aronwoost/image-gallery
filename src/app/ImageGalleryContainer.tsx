@@ -11,11 +11,11 @@ const IMAGES = [
   "./image06.jpg",
 ];
 
-const ImageGalleryContainer = () => {
+const ImageGalleryContainer = ({ onClose }: { onClose: () => void }) => {
   return (
     <div className={styles.container}>
       <p>hello</p>
-      <ImageGallery index={0} images={IMAGES} onClose={() => {}} />
+      <ImageGallery index={0} images={IMAGES} onClose={onClose} />
     </div>
   );
 };

@@ -4,11 +4,19 @@ import PinchZoom from "./pinchzoom";
 
 import styles from "./Slide.module.css";
 
-const Slide = ({ image, loadImage, active }) => {
+const Slide = ({
+  image,
+  loadImage,
+  active,
+}: {
+  image: string;
+  loadImage: boolean;
+  active: boolean;
+}) => {
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  const ref = useRef();
-  const pinchZoomRef = useRef();
+  const ref = useRef<HTMLDivElement | null>(null);
+  const pinchZoomRef = useRef<any>();
 
   useEffect(() => {
     if (

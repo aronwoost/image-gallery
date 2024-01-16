@@ -1,4 +1,11 @@
-import React, { Fragment, useState, useEffect, useRef, createRef } from "react";
+import React, {
+  Fragment,
+  useState,
+  useEffect,
+  useRef,
+  createRef,
+  KeyboardEventHandler,
+} from "react";
 import cx from "classnames";
 
 import Slide from "./Slide";
@@ -37,7 +44,9 @@ const ImageGallery = ({
   const [loadedImages, setLoadedImages] = useState(loadedImagesRef.current);
 
   const imagesAndVideos = images;
-  const slideRefs = useRef(imagesAndVideos.map(() => createRef()));
+  const slideRefs = useRef(
+    imagesAndVideos.map(() => createRef<HTMLDivElement>()),
+  );
 
   const updateImageToLoad = (index: number) => {
     // create new array, otherwise setLoadedImages() will not trigger re-render
@@ -59,7 +68,7 @@ const ImageGallery = ({
     setLoadedImages(loadedImagesRef.current);
   };
 
-  const slideContainerRef = useRef();
+  const slideContainerRef = useRef<HTMLDivElement | null>(null);
 
   const changeImage = (index: number) => {
     if (imageIndexRef.current === index) {
@@ -90,7 +99,7 @@ const ImageGallery = ({
 
   const handlePinchingStarted = () => setPinchingInProgress(true);
   const handlePinchingEnded = () => setPinchingInProgress(false);
-  const handleChangeOpacity = (event) => setOpacity(event.opacity);
+  const handleChangeOpacity = (event: any) => setOpacity(event.opacity);
   const handleClose = () => onClose();
 
   useEffect(() => {
@@ -110,12 +119,16 @@ const ImageGallery = ({
         entries.forEach((entry) => {
           // used to determine for image being changed
           if (entry.intersectionRatio === 1) {
-            changeImage(parseInt(entry.target.dataset.index, 10));
+            changeImage(
+              parseInt((entry.target as HTMLElement).dataset.index ?? "", 10),
+            );
           }
           // used to determine for image being in the viewport and should be
           // loaded
           if (entry.intersectionRatio > 0) {
-            updateImageToLoad(parseInt(entry.target.dataset.index, 10));
+            updateImageToLoad(
+              parseInt((entry.target as HTMLElement).dataset.index ?? "", 10),
+            );
           }
         });
       },
@@ -151,9 +164,9 @@ const ImageGallery = ({
     };
   }, [slideContainerRef.current]);
 
-  const preventEvent = (event) => event.preventDefault();
+  const preventEvent = (event: Event) => event.preventDefault();
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown = (event: KeyboardEvent) => {
     if (event.keyCode === 37) {
       prevImage();
     } else if (event.keyCode === 39) {
@@ -181,7 +194,10 @@ const ImageGallery = ({
       if (slideRefs.current?.[imageIndex].current) {
         // Scroll to current slide
         const slide = slideRefs.current[imageIndexRef.current].current;
-        slide.scrollIntoView({ block: "nearest", inline: "start" });
+
+        if (slide) {
+          slide.scrollIntoView({ block: "nearest", inline: "start" });
+        }
       }
 
       // Re-enable IntersectionObserver
@@ -218,7 +234,10 @@ const ImageGallery = ({
     }
 
     const slide = slideRefs.current[imageIndex].current;
-    slide.scrollIntoView({ block: "nearest", inline: "start" });
+
+    if (slide) {
+      slide.scrollIntoView({ block: "nearest", inline: "start" });
+    }
   }, [imageIndex]);
 
   return (

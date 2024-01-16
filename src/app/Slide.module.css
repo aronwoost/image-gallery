@@ -1,0 +1,67 @@
+.container {
+  display: block;
+  height: 100%;
+  overflow: hidden;
+  touch-action: pan-x;
+}
+
+.pinchZoom {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: translate(0, 0) scale(1);
+  transform-origin: 0 0;
+  will-change: transform;
+  touch-action: pan-x;
+}
+
+.image {
+  /* @supports (object-fit: contain) { */
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* } */
+}
+
+.loadingSpinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
+  /* > svg {
+    width: 30px;
+    color: white;
+  } */
+}
+
+.iframeContainer {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  @media (--screen-width-medium) {
+    width: 60%;
+  }
+}
+
+.iframeWrapper {
+  position: relative;
+  height: 0;
+  padding-top: 30px;
+  padding-bottom: 50%;
+}
+
+.youtubeIframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}

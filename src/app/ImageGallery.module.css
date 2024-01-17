@@ -44,6 +44,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
+  pointer-events: none;
 
   @media (width >= 1200px) {
     position: static;
@@ -61,6 +62,7 @@
   border-radius: 14px;
   color: white;
   font-size: 14px;
+  pointer-events: all;
 }
 
 .navigationButton {

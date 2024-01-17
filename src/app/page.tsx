@@ -1,5 +1,7 @@
 'use client';
 
+import './global.css';
+
 import { useState } from 'react';
 
 import ImageGallery from './ImageGallery';
@@ -20,7 +22,13 @@ export default function Home() {
   return (
     <main>
       <div className={styles.buttons}>
-        <button type="button" onClick={() => setGalleryOpen(true)}>
+        <button
+          type="button"
+          onClick={() => {
+            setImageIndex(0);
+            setGalleryOpen(true);
+          }}
+        >
           Open Gallery
         </button>
         <button

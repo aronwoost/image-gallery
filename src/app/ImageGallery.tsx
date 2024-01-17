@@ -1,6 +1,8 @@
 import cx from 'classnames';
 import React, { createRef, Fragment, useEffect, useRef, useState } from 'react';
 
+import ArrowLeft from './ArrowLeft';
+import ArrowRight from './ArrowRight';
 import styles from './ImageGallery.module.css';
 import Slide from './Slide';
 
@@ -209,8 +211,8 @@ const ImageGallery = ({
       >
         <span
           className={styles.counter}
-        >{`${imageIndex + 1} ${imagesAndVideos.length}`}</span>
-        <button type="button" onClick={close}>
+        >{`${imageIndex + 1} / ${imagesAndVideos.length}`}</span>
+        <button type="button" className={styles.closeButton} onClick={close}>
           close
         </button>
       </div>
@@ -222,8 +224,7 @@ const ImageGallery = ({
         >
           {imagesAndVideos.length > 1 && (
             <Fragment>
-              <button
-                type="button"
+              <div
                 className={cx(
                   styles.navigationButton,
                   styles.interface,
@@ -234,10 +235,9 @@ const ImageGallery = ({
                 )}
                 onClick={prevImage}
               >
-                PREV
-              </button>
-              <button
-                type="button"
+                <ArrowLeft />
+              </div>
+              <div
                 className={cx(
                   styles.navigationButton,
                   styles.interface,
@@ -248,8 +248,8 @@ const ImageGallery = ({
                 )}
                 onClick={nextImage}
               >
-                NEXT
-              </button>
+                <ArrowRight />
+              </div>
             </Fragment>
           )}
           <div className={styles.swipeContainer} ref={slideContainerRef}>

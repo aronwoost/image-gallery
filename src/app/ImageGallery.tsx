@@ -20,8 +20,6 @@ const ImageGallery = ({
   const imageIndexRef = useRef(initialIndex);
   const [imageIndex, setImageIndex] = useState(imageIndexRef.current);
 
-  console.log({ imageIndex });
-
   const [opacity, setOpacity] = useState(1);
   const [pinchingInProgress, setPinchingInProgress] = useState(false);
 
@@ -170,17 +168,13 @@ const ImageGallery = ({
   useEffect(() => {
     // prevent Mobile Safari from sometimes(TM) capturing the pinch/zoom gesture
     document.addEventListener('gesturestart', preventEvent);
-
     document.addEventListener('keydown', handleKeyDown);
-
     window.addEventListener('orientationchange', handleOrientationChange);
 
     // eslint-disable-next-line consistent-return
     return () => {
       document.removeEventListener('gesturestart', preventEvent);
-
       document.removeEventListener('keydown', handleKeyDown);
-
       window.removeEventListener('orientationchange', handleOrientationChange);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -202,7 +196,6 @@ const ImageGallery = ({
     <div
       className={styles.container}
       style={{ backgroundColor: `rgba(45,47,59,${opacity})` }}
-      data-testid="ImageGallery"
     >
       <div
         className={cx(styles.interface, styles.topBar, {
@@ -258,7 +251,7 @@ const ImageGallery = ({
                 className={styles.slide}
                 ref={slideRefs.current[index]}
                 data-index={index}
-                key={`slide-${imageOrVideo}`}
+                key={imageOrVideo}
               >
                 <Slide image={imageOrVideo} active={imageIndex === index} />
               </div>

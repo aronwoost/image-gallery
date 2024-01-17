@@ -75,6 +75,10 @@ class PinchZoom {
     this.transformElement = this.element.children[0];
   }
 
+  reset() {
+    this.setTransform({ x: 0, y: 0, scale: 1 });
+  }
+
   onPointerStart(event) {
     // We only want to track 2 pointers at most
     if (this.currentPointers.length === 2) return;

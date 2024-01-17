@@ -11,7 +11,7 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  basePath: '/image-gallery',
+  basePath: process.env.NODE_ENV === 'development' ? '' : '/image-gallery',
   env: {
     commit,
   },

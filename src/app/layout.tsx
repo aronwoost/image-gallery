@@ -8,7 +8,14 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <meta property="version" content={process.env.commit} />
+      <head>
+        <meta property="version" content={process.env.commit} />
+        <link
+          href="http://fonts.googleapis.com/css?family=Roboto"
+          rel="stylesheet"
+          type="text/css"
+        ></link>
+      </head>
       <body>{children}</body>
     </html>
   );

@@ -30,6 +30,12 @@ const Slide = ({ image, active }: { image: string; active: boolean }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ref.current, active, imageLoaded]);
 
+  useEffect(() => {
+    if (pinchZoomRef.current && !active) {
+      pinchZoomRef.current.reset();
+    }
+  }, [active]);
+
   return (
     <div ref={ref} className={styles.container}>
       <div className={styles.pinchZoom}>

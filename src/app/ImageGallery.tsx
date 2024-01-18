@@ -25,10 +25,7 @@ const ImageGallery = ({
 
   const rotationInProgress = useRef(false);
 
-  const imagesAndVideos = images;
-  const slideRefs = useRef(
-    imagesAndVideos.map(() => createRef<HTMLDivElement>())
-  );
+  const slideRefs = useRef(images.map(() => createRef<HTMLDivElement>()));
 
   const slideContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -43,14 +40,14 @@ const ImageGallery = ({
 
   const prevImage = () => {
     if (imageIndexRef.current - 1 === -1) {
-      changeImage(imagesAndVideos.length - 1);
+      changeImage(images.length - 1);
     } else {
       changeImage(imageIndexRef.current - 1);
     }
   };
 
   const nextImage = () => {
-    if (imageIndexRef.current + 1 === imagesAndVideos.length) {
+    if (imageIndexRef.current + 1 === images.length) {
       changeImage(0);
     } else {
       changeImage(imageIndexRef.current + 1);
@@ -204,7 +201,7 @@ const ImageGallery = ({
       >
         <span
           className={styles.counter}
-        >{`${imageIndex + 1} / ${imagesAndVideos.length}`}</span>
+        >{`${imageIndex + 1} / ${images.length}`}</span>
         <button type="button" className={styles.closeButton} onClick={close}>
           close
         </button>
@@ -212,10 +209,10 @@ const ImageGallery = ({
       <div className={styles.component}>
         <div
           className={cx(styles.bigImageArea, {
-            [styles.oneImage]: imagesAndVideos.length === 1,
+            [styles.oneImage]: images.length === 1,
           })}
         >
-          {imagesAndVideos.length > 1 && (
+          {images.length > 1 && (
             <Fragment>
               <div
                 className={cx(
@@ -246,7 +243,7 @@ const ImageGallery = ({
             </Fragment>
           )}
           <div className={styles.swipeContainer} ref={slideContainerRef}>
-            {imagesAndVideos.map((imageOrVideo, index) => (
+            {images.map((imageOrVideo, index) => (
               <div
                 className={styles.slide}
                 ref={slideRefs.current[index]}

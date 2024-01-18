@@ -125,12 +125,9 @@ const ImageGallery = ({
   };
 
   /*
-    Fixes bug, when rotating the device. Mobile Safari (iOS 14) and Samsung (Android)
+    Fixes bug, when rotating the device. Mobile Safari (iOS 17 time of writing)
     do not support restoring scroll-snap-align scroll position when device is
     rotated (Chrome does, read more: https://web.dev/snap-after-layout/).
-
-    For Samsung browser it should be fixed when Samsung updated to Chromium 81+
-    https://en.wikipedia.org/wiki/Samsung_Internet
    */
   const handleOrientationChange = () => {
     // This disables IntersectionObserver check. Otherwise the IntersectionObserver

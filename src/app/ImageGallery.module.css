@@ -37,6 +37,11 @@
   pointer-events: none;
 }
 
+.disable {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
 .topBar {
   position: absolute;
   display: flex;

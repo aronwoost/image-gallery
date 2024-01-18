@@ -208,14 +208,14 @@ const ImageGallery = ({
       style={{ backgroundColor: `rgba(45,47,59,${opacity})` }}
     >
       <div
-        className={cx(styles.interface, styles.topBar, {
+        className={cx(styles.interface, {
           [styles.disablePointerEvents]: pinchingInProgress,
         })}
       >
-        <span
-          className={styles.counter}
-        >{`${imageIndex + 1} / ${images.length}`}</span>
-        <div>
+        <div className={styles.topBar}>
+          <span
+            className={styles.counter}
+          >{`${imageIndex + 1} / ${images.length}`}</span>
           <button
             type="button"
             className={styles.closeButton}
@@ -224,24 +224,28 @@ const ImageGallery = ({
             close
           </button>
         </div>
-        <div
-          className={cx(styles.navigationButton, styles.previous, {
-            [styles.disable]: imageIndex - 1 === -1,
-            [styles.hide]: images.length === 1,
-          })}
-          onClick={prevImage}
-        >
-          <ArrowLeft />
+        <div className={styles.navigationButtons}>
+          <div
+            className={cx(styles.navigationButton, {
+              [styles.disable]: imageIndex - 1 === -1,
+              [styles.hide]: images.length === 1,
+            })}
+            onClick={prevImage}
+          >
+            <ArrowLeft />
+          </div>
+          <div
+            className={cx(styles.navigationButton, {
+              [styles.disable]: imageIndex + 1 === images.length,
+              [styles.hide]: images.length === 1,
+            })}
+            onClick={nextImage}
+          >
+            <ArrowRight />
+          </div>
         </div>
-        <div
-          className={cx(styles.navigationButton, styles.next, {
-            [styles.disable]: imageIndex + 1 === images.length,
-            [styles.hide]: images.length === 1,
-          })}
-          onClick={nextImage}
-        >
-          <ArrowRight />
-        </div>
+        {/* Empty div so that the above one is centered in flex */}
+        <div></div>
       </div>
       <div className={styles.swipeContainer} ref={slideContainerRef}>
         {images.map((image, index) => (

@@ -48,7 +48,8 @@
   width: 100%;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 16px;
+  padding: 12px calc(env(safe-area-inset-right) + 16px) 12px
+    calc(env(safe-area-inset-left) + 16px);
   pointer-events: none;
 
   @media (width >= 1200px) {

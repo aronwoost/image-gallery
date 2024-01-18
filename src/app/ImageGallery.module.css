@@ -46,11 +46,6 @@
   pointer-events: none;
 }
 
-.disable {
-  opacity: 0.5;
-  pointer-events: none;
-}
-
 .hide {
   display: none;
 }
@@ -85,6 +80,11 @@
 .navigationButton {
   cursor: pointer;
   pointer-events: all;
+
+  &.disable {
+    opacity: 0.5;
+    pointer-events: none;
+  }
 }
 
 .swipeContainer {

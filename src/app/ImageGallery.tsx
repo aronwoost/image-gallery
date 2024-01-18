@@ -1,5 +1,12 @@
 import cx from 'classnames';
-import React, { createRef, Fragment, useEffect, useRef, useState } from 'react';
+import React, {
+  createRef,
+  Fragment,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import ArrowLeft from './ArrowLeft';
 import ArrowRight from './ArrowRight';
@@ -17,8 +24,7 @@ const ImageGallery = ({
   images: string[];
   onClose: () => void;
 }) => {
-  const imageIndexRef = useRef(initialIndex);
-  const [imageIndex, setImageIndex] = useState(imageIndexRef.current);
+  const [imageIndex, setImageIndex] = useState(initialIndex);
 
   const [opacity, setOpacity] = useState(1);
   const [pinchingInProgress, setPinchingInProgress] = useState(false);
@@ -29,34 +35,35 @@ const ImageGallery = ({
 
   const slideContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const changeImage = (index: number) => {
-    if (imageIndexRef.current === index) {
-      return;
+  const changeImage = useCallback(
+    (index: number) => {
+      if (imageIndex === index) {
+        return;
+      }
+
+      setImageIndex(index);
+    },
+    [imageIndex, setImageIndex]
+  );
+
+  const prevImage = useCallback(() => {
+    if (imageIndex - 1 > -1) {
+      changeImage(imageIndex - 1);
     }
+  }, [imageIndex, changeImage]);
 
-    imageIndexRef.current = index;
-    setImageIndex(index);
-  };
-
-  const prevImage = () => {
-    if (imageIndexRef.current - 1 > -1) {
-      changeImage(imageIndexRef.current - 1);
+  const nextImage = useCallback(() => {
+    if (imageIndex + 1 < images.length) {
+      changeImage(imageIndex + 1);
     }
-  };
-
-  const nextImage = () => {
-    if (imageIndexRef.current + 1 < images.length) {
-      changeImage(imageIndexRef.current + 1);
-    }
-  };
-
-  const close = () => onClose();
+  }, [imageIndex, images.length, changeImage]);
 
   const handlePinchingStarted = () => setPinchingInProgress(true);
   const handlePinchingEnded = () => setPinchingInProgress(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleChangeOpacity = (event: any) => setOpacity(event.opacity);
-  const handleClose = () => onClose();
+
+  const handleClose = useCallback(() => onClose(), [onClose]);
 
   useEffect(() => {
     if (!slideContainerRef.current) {
@@ -114,22 +121,25 @@ const ImageGallery = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slideContainerRef.current]);
 
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.keyCode === 37) {
-      prevImage();
-    } else if (event.keyCode === 39) {
-      nextImage();
-    } else if (event.keyCode === 27) {
-      close();
-    }
-  };
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === 'ArrowLeft') {
+        prevImage();
+      } else if (event.key === 'ArrowRight') {
+        nextImage();
+      } else if (event.key === 'Escape') {
+        handleClose();
+      }
+    },
+    [handleClose, nextImage, prevImage]
+  );
 
   /*
-    Fixes bug, when rotating the device. Mobile Safari (iOS 17 time of writing)
+    Fixes bug, when rotating the device. Mobile Safari (iOS 17, time of writing)
     do not support restoring scroll-snap-align scroll position when device is
     rotated (Chrome does, read more: https://web.dev/snap-after-layout/).
    */
-  const handleOrientationChange = () => {
+  const handleOrientationChange = useCallback(() => {
     // This disables IntersectionObserver check. Otherwise the IntersectionObserver
     // would wrongly detect a change of the current slide once the slides are repainted
     // after an orientation change.
@@ -138,7 +148,7 @@ const ImageGallery = ({
     const handleResize = () => {
       if (slideRefs.current?.[imageIndex].current) {
         // Scroll to current slide
-        const slide = slideRefs.current[imageIndexRef.current].current;
+        const slide = slideRefs.current[imageIndex].current;
 
         if (slide) {
           slide.scrollIntoView({ block: 'nearest', inline: 'start' });
@@ -153,7 +163,7 @@ const ImageGallery = ({
 
     // Wait for the resize event. Only at that moment the new height is actually set.
     window.addEventListener('resize', handleResize);
-  };
+  }, [imageIndex]);
 
   useEffect(() => {
     // prevent Mobile Safari from sometimes(TM) capturing the pinch/zoom gesture
@@ -161,14 +171,12 @@ const ImageGallery = ({
     document.addEventListener('keydown', handleKeyDown);
     window.addEventListener('orientationchange', handleOrientationChange);
 
-    // eslint-disable-next-line consistent-return
     return () => {
       document.removeEventListener('gesturestart', preventEvent);
       document.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('orientationchange', handleOrientationChange);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [imageIndex, handleKeyDown, handleOrientationChange]);
 
   useEffect(() => {
     if (!slideRefs.current?.[imageIndex].current) {
@@ -195,7 +203,11 @@ const ImageGallery = ({
         <span
           className={styles.counter}
         >{`${imageIndex + 1} / ${images.length}`}</span>
-        <button type="button" className={styles.closeButton} onClick={close}>
+        <button
+          type="button"
+          className={styles.closeButton}
+          onClick={handleClose}
+        >
           close
         </button>
       </div>
@@ -214,7 +226,7 @@ const ImageGallery = ({
                   styles.previous,
                   {
                     [styles.disablePointerEvents]: pinchingInProgress,
-                    [styles.disable]: imageIndexRef.current - 1 === -1,
+                    [styles.disable]: imageIndex - 1 === -1,
                   }
                 )}
                 onClick={prevImage}
@@ -228,8 +240,7 @@ const ImageGallery = ({
                   styles.next,
                   {
                     [styles.disablePointerEvents]: pinchingInProgress,
-                    [styles.disable]:
-                      imageIndexRef.current + 1 === images.length,
+                    [styles.disable]: imageIndex + 1 === images.length,
                   }
                 )}
                 onClick={nextImage}

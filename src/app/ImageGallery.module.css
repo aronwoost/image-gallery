@@ -79,12 +79,12 @@
 
 .next {
   right: 0;
-  padding-right: 16px;
+  padding-right: calc(env(safe-area-inset-right) + 16px);
 }
 
 .previous {
   left: 0;
-  padding-left: 16px;
+  padding-left: calc(env(safe-area-inset-left) + 16px);
 }
 
 .component {

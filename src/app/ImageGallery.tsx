@@ -89,6 +89,9 @@ const ImageGallery = ({
             const datasetIndex = (target as HTMLElement).dataset.index;
             const index = parseInt(datasetIndex ?? '', 10);
 
+            // In case of no image being fully visible (we are currently
+            // scrolling), we set activeImageIndex to -1, so all pinchzoom
+            // functionality is reseted/disabled
             setActiveImageIndex(-1);
             setImageIndex(index);
           }

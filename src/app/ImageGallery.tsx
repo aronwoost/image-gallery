@@ -20,17 +20,12 @@ const ImageGallery = ({
   const imageIndexRef = useRef(initialIndex);
   const [imageIndex, setImageIndex] = useState(imageIndexRef.current);
 
-  console.log({ imageIndex });
-
   const [opacity, setOpacity] = useState(1);
   const [pinchingInProgress, setPinchingInProgress] = useState(false);
 
   const rotationInProgress = useRef(false);
 
-  const imagesAndVideos = images;
-  const slideRefs = useRef(
-    imagesAndVideos.map(() => createRef<HTMLDivElement>())
-  );
+  const slideRefs = useRef(images.map(() => createRef<HTMLDivElement>()));
 
   const slideContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -45,14 +40,14 @@ const ImageGallery = ({
 
   const prevImage = () => {
     if (imageIndexRef.current - 1 === -1) {
-      changeImage(imagesAndVideos.length - 1);
+      changeImage(images.length - 1);
     } else {
       changeImage(imageIndexRef.current - 1);
     }
   };
 
   const nextImage = () => {
-    if (imageIndexRef.current + 1 === imagesAndVideos.length) {
+    if (imageIndexRef.current + 1 === images.length) {
       changeImage(0);
     } else {
       changeImage(imageIndexRef.current + 1);
@@ -170,17 +165,13 @@ const ImageGallery = ({
   useEffect(() => {
     // prevent Mobile Safari from sometimes(TM) capturing the pinch/zoom gesture
     document.addEventListener('gesturestart', preventEvent);
-
     document.addEventListener('keydown', handleKeyDown);
-
     window.addEventListener('orientationchange', handleOrientationChange);
 
     // eslint-disable-next-line consistent-return
     return () => {
       document.removeEventListener('gesturestart', preventEvent);
-
       document.removeEventListener('keydown', handleKeyDown);
-
       window.removeEventListener('orientationchange', handleOrientationChange);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -202,7 +193,6 @@ const ImageGallery = ({
     <div
       className={styles.container}
       style={{ backgroundColor: `rgba(45,47,59,${opacity})` }}
-      data-testid="ImageGallery"
     >
       <div
         className={cx(styles.interface, styles.topBar, {
@@ -211,7 +201,7 @@ const ImageGallery = ({
       >
         <span
           className={styles.counter}
-        >{`${imageIndex + 1} / ${imagesAndVideos.length}`}</span>
+        >{`${imageIndex + 1} / ${images.length}`}</span>
         <button type="button" className={styles.closeButton} onClick={close}>
           close
         </button>
@@ -219,10 +209,10 @@ const ImageGallery = ({
       <div className={styles.component}>
         <div
           className={cx(styles.bigImageArea, {
-            [styles.oneImage]: imagesAndVideos.length === 1,
+            [styles.oneImage]: images.length === 1,
           })}
         >
-          {imagesAndVideos.length > 1 && (
+          {images.length > 1 && (
             <Fragment>
               <div
                 className={cx(
@@ -253,12 +243,12 @@ const ImageGallery = ({
             </Fragment>
           )}
           <div className={styles.swipeContainer} ref={slideContainerRef}>
-            {imagesAndVideos.map((imageOrVideo, index) => (
+            {images.map((imageOrVideo, index) => (
               <div
                 className={styles.slide}
                 ref={slideRefs.current[index]}
                 data-index={index}
-                key={`slide-${imageOrVideo}`}
+                key={imageOrVideo}
               >
                 <Slide image={imageOrVideo} active={imageIndex === index} />
               </div>

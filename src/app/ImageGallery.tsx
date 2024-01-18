@@ -77,7 +77,7 @@ const ImageGallery = ({
           if (intersectionRatio === 0) {
             return;
           }
-          // used to determine for image being changed
+
           if (intersectionRatio === 1) {
             const datasetIndex = (target as HTMLElement).dataset.index;
             const index = parseInt(datasetIndex ?? '', 10);

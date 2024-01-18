@@ -62,7 +62,6 @@ const ImageGallery = ({
   const handlePinchingEnded = () => setPinchingInProgress(false);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleChangeOpacity = (event: any) => setOpacity(event.opacity);
-
   const handleClose = useCallback(() => onClose(), [onClose]);
 
   useEffect(() => {

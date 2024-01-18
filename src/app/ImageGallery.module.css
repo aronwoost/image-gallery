@@ -46,10 +46,6 @@
   pointer-events: none;
 }
 
-.hide {
-  display: none;
-}
-
 .topBar {
   display: flex;
   width: 100%;
@@ -85,6 +81,10 @@
   &.disable {
     opacity: 0.5;
     pointer-events: none;
+  }
+
+  &.hide {
+    display: none;
   }
 }
 

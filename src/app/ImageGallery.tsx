@@ -24,7 +24,13 @@ const ImageGallery = ({
   images: string[];
   onClose: () => void;
 }) => {
+  // We maintain two image indexes. "imageIndex" is for displaying purposes,
+  // like update the counter and toggle the prev/next button. "imageIndex"
+  // updates fast. "activeImageIndex" is used to determine which slide is
+  // currently fully visible. This is important, because only then the
+  // pinchzoom functionality is activated.
   const [imageIndex, setImageIndex] = useState(initialIndex);
+  const [activeImageIndex, setActiveImageIndex] = useState(initialIndex);
 
   const [opacity, setOpacity] = useState(1);
   const [pinchingInProgress, setPinchingInProgress] = useState(false);
@@ -35,28 +41,17 @@ const ImageGallery = ({
 
   const slideContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const changeImage = useCallback(
-    (index: number) => {
-      if (imageIndex === index) {
-        return;
-      }
-
-      setImageIndex(index);
-    },
-    [imageIndex, setImageIndex]
-  );
-
   const prevImage = useCallback(() => {
     if (imageIndex - 1 > -1) {
-      changeImage(imageIndex - 1);
+      setActiveImageIndex(imageIndex - 1);
     }
-  }, [imageIndex, changeImage]);
+  }, [imageIndex, setActiveImageIndex]);
 
   const nextImage = useCallback(() => {
     if (imageIndex + 1 < images.length) {
-      changeImage(imageIndex + 1);
+      setActiveImageIndex(imageIndex + 1);
     }
-  }, [imageIndex, images.length, changeImage]);
+  }, [imageIndex, images.length, setActiveImageIndex]);
 
   const handlePinchingStarted = () => setPinchingInProgress(true);
   const handlePinchingEnded = () => setPinchingInProgress(false);
@@ -77,12 +72,28 @@ const ImageGallery = ({
           return;
         }
 
-        entries.forEach((entry) => {
+        entries.forEach(({ target, intersectionRatio }) => {
+          if (intersectionRatio === 0) {
+            return;
+          }
           // used to determine for image being changed
-          if (entry.intersectionRatio === 1) {
-            changeImage(
-              parseInt((entry.target as HTMLElement).dataset.index ?? '', 10)
-            );
+          if (intersectionRatio === 1) {
+            const datasetIndex = (target as HTMLElement).dataset.index;
+            const index = parseInt(datasetIndex ?? '', 10);
+
+            setActiveImageIndex(index);
+            setImageIndex(index);
+          }
+
+          if (intersectionRatio > 0.55 && intersectionRatio < 1) {
+            const datasetIndex = (target as HTMLElement).dataset.index;
+            const index = parseInt(datasetIndex ?? '', 10);
+
+            // In case of no image being fully visible (we are currently
+            // scrolling), we set activeImageIndex to -1, so all pinchzoom
+            // functionality is reseted/disabled
+            setActiveImageIndex(-1);
+            setImageIndex(index);
           }
         });
       },
@@ -92,7 +103,7 @@ const ImageGallery = ({
         // IntersectionObserver doesn't kick in, when height is float
         // instead of int (315.5 vs 315).
         rootMargin: '1px 0px',
-        threshold: [0.05, 1],
+        threshold: [0.55, 1],
       }
     );
 
@@ -178,16 +189,16 @@ const ImageGallery = ({
   }, [imageIndex, handleKeyDown, handleOrientationChange]);
 
   useEffect(() => {
-    if (!slideRefs.current?.[imageIndex].current) {
+    if (!slideRefs.current?.[activeImageIndex]?.current) {
       return;
     }
 
-    const slide = slideRefs.current[imageIndex].current;
+    const slide = slideRefs.current[activeImageIndex]?.current;
 
     if (slide) {
       slide.scrollIntoView({ block: 'nearest', inline: 'start' });
     }
-  }, [imageIndex]);
+  }, [activeImageIndex]);
 
   return (
     <div
@@ -256,7 +267,10 @@ const ImageGallery = ({
                 data-index={index}
                 key={imageOrVideo}
               >
-                <Slide image={imageOrVideo} active={imageIndex === index} />
+                <Slide
+                  image={imageOrVideo}
+                  active={activeImageIndex === index}
+                />
               </div>
             ))}
           </div>

@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 
 import PinchZoom from './pinchzoom';
 import styles from './Slide.module.css';
@@ -35,6 +35,20 @@ const Slide = ({ image, active }: { image: string; active: boolean }) => {
       pinchZoomRef.current.reset();
     }
   }, [active]);
+
+  const handleOrientationChange = useCallback(() => {
+    if (pinchZoomRef.current) {
+      pinchZoomRef.current.reset();
+    }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('orientationchange', handleOrientationChange);
+
+    return () => {
+      window.removeEventListener('orientationchange', handleOrientationChange);
+    };
+  }, [handleOrientationChange]);
 
   return (
     <div ref={ref} className={styles.container}>

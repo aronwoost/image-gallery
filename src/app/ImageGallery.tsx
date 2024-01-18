@@ -39,17 +39,13 @@ const ImageGallery = ({
   };
 
   const prevImage = () => {
-    if (imageIndexRef.current - 1 === -1) {
-      changeImage(images.length - 1);
-    } else {
+    if (imageIndexRef.current - 1 > -1) {
       changeImage(imageIndexRef.current - 1);
     }
   };
 
   const nextImage = () => {
-    if (imageIndexRef.current + 1 === images.length) {
-      changeImage(0);
-    } else {
+    if (imageIndexRef.current + 1 < images.length) {
       changeImage(imageIndexRef.current + 1);
     }
   };
@@ -221,6 +217,7 @@ const ImageGallery = ({
                   styles.previous,
                   {
                     [styles.disablePointerEvents]: pinchingInProgress,
+                    [styles.disable]: imageIndexRef.current - 1 === -1,
                   }
                 )}
                 onClick={prevImage}
@@ -234,6 +231,8 @@ const ImageGallery = ({
                   styles.next,
                   {
                     [styles.disablePointerEvents]: pinchingInProgress,
+                    [styles.disable]:
+                      imageIndexRef.current + 1 === images.length,
                   }
                 )}
                 onClick={nextImage}

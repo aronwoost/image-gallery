@@ -215,59 +215,45 @@ const ImageGallery = ({
         <span
           className={styles.counter}
         >{`${imageIndex + 1} / ${images.length}`}</span>
-        <button
-          type="button"
-          className={styles.closeButton}
-          onClick={handleClose}
-        >
-          close
-        </button>
-      </div>
-      <div className={styles.component}>
-        {images.length > 1 && (
-          <Fragment>
-            <div
-              className={cx(
-                styles.navigationButton,
-                styles.interface,
-                styles.previous,
-                {
-                  [styles.disablePointerEvents]: pinchingInProgress,
-                  [styles.disable]: imageIndex - 1 === -1,
-                }
-              )}
-              onClick={prevImage}
-            >
-              <ArrowLeft />
-            </div>
-            <div
-              className={cx(
-                styles.navigationButton,
-                styles.interface,
-                styles.next,
-                {
-                  [styles.disablePointerEvents]: pinchingInProgress,
-                  [styles.disable]: imageIndex + 1 === images.length,
-                }
-              )}
-              onClick={nextImage}
-            >
-              <ArrowRight />
-            </div>
-          </Fragment>
-        )}
-        <div className={styles.swipeContainer} ref={slideContainerRef}>
-          {images.map((imageOrVideo, index) => (
-            <div
-              className={styles.slide}
-              ref={slideRefs.current[index]}
-              data-index={index}
-              key={imageOrVideo}
-            >
-              <Slide image={imageOrVideo} active={activeImageIndex === index} />
-            </div>
-          ))}
+        <div>
+          <button
+            type="button"
+            className={styles.closeButton}
+            onClick={handleClose}
+          >
+            close
+          </button>
         </div>
+        <div
+          className={cx(styles.navigationButton, styles.previous, {
+            [styles.disable]: imageIndex - 1 === -1,
+            [styles.hide]: images.length === 1,
+          })}
+          onClick={prevImage}
+        >
+          <ArrowLeft />
+        </div>
+        <div
+          className={cx(styles.navigationButton, styles.next, {
+            [styles.disable]: imageIndex + 1 === images.length,
+            [styles.hide]: images.length === 1,
+          })}
+          onClick={nextImage}
+        >
+          <ArrowRight />
+        </div>
+      </div>
+      <div className={styles.swipeContainer} ref={slideContainerRef}>
+        {images.map((image, index) => (
+          <div
+            className={styles.slide}
+            ref={slideRefs.current[index]}
+            data-index={index}
+            key={image}
+          >
+            <Slide image={image} active={activeImageIndex === index} />
+          </div>
+        ))}
       </div>
     </div>
   );

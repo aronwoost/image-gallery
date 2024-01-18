@@ -1,7 +1,6 @@
 import cx from 'classnames';
 import React, {
   createRef,
-  Fragment,
   useCallback,
   useEffect,
   useRef,
@@ -118,7 +117,6 @@ const ImageGallery = ({
       if (current) observer.observe(current);
     });
 
-    // eslint-disable-next-line consistent-return
     return () => {
       element.removeEventListener('pinchingStarted', handlePinchingStarted);
       element.removeEventListener('pinchingEnded', handlePinchingEnded);
@@ -130,8 +128,7 @@ const ImageGallery = ({
         if (current) observer.unobserve(current);
       });
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [slideContainerRef.current]);
+  }, [handleClose]);
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {

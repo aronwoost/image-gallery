@@ -31,8 +31,6 @@ const ImageGallery = ({
   const [imageIndex, setImageIndex] = useState(initialIndex);
   const [activeImageIndex, setActiveImageIndex] = useState(initialIndex);
 
-  console.log('re-render');
-
   const [opacity, setOpacity] = useState(1);
   const [pinchingInProgress, setPinchingInProgress] = useState(false);
 

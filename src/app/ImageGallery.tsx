@@ -1,7 +1,6 @@
 import cx from 'classnames';
 import React, {
   createRef,
-  Fragment,
   useCallback,
   useEffect,
   useRef,
@@ -76,7 +75,7 @@ const ImageGallery = ({
           if (intersectionRatio === 0) {
             return;
           }
-          // used to determine for image being changed
+
           if (intersectionRatio === 1) {
             const datasetIndex = (target as HTMLElement).dataset.index;
             const index = parseInt(datasetIndex ?? '', 10);
@@ -116,7 +115,6 @@ const ImageGallery = ({
       if (current) observer.observe(current);
     });
 
-    // eslint-disable-next-line consistent-return
     return () => {
       element.removeEventListener('pinchingStarted', handlePinchingStarted);
       element.removeEventListener('pinchingEnded', handlePinchingEnded);
@@ -128,8 +126,7 @@ const ImageGallery = ({
         if (current) observer.unobserve(current);
       });
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [slideContainerRef.current]);
+  }, [handleClose]);
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
@@ -206,75 +203,56 @@ const ImageGallery = ({
       style={{ backgroundColor: `rgba(45,47,59,${opacity})` }}
     >
       <div
-        className={cx(styles.interface, styles.topBar, {
+        className={cx(styles.interface, {
           [styles.disablePointerEvents]: pinchingInProgress,
         })}
       >
-        <span
-          className={styles.counter}
-        >{`${imageIndex + 1} / ${images.length}`}</span>
-        <button
-          type="button"
-          className={styles.closeButton}
-          onClick={handleClose}
-        >
-          close
-        </button>
-      </div>
-      <div className={styles.component}>
-        <div
-          className={cx(styles.bigImageArea, {
-            [styles.oneImage]: images.length === 1,
-          })}
-        >
-          {images.length > 1 && (
-            <Fragment>
-              <div
-                className={cx(
-                  styles.navigationButton,
-                  styles.interface,
-                  styles.previous,
-                  {
-                    [styles.disablePointerEvents]: pinchingInProgress,
-                    [styles.disable]: imageIndex - 1 === -1,
-                  }
-                )}
-                onClick={prevImage}
-              >
-                <ArrowLeft />
-              </div>
-              <div
-                className={cx(
-                  styles.navigationButton,
-                  styles.interface,
-                  styles.next,
-                  {
-                    [styles.disablePointerEvents]: pinchingInProgress,
-                    [styles.disable]: imageIndex + 1 === images.length,
-                  }
-                )}
-                onClick={nextImage}
-              >
-                <ArrowRight />
-              </div>
-            </Fragment>
-          )}
-          <div className={styles.swipeContainer} ref={slideContainerRef}>
-            {images.map((imageOrVideo, index) => (
-              <div
-                className={styles.slide}
-                ref={slideRefs.current[index]}
-                data-index={index}
-                key={imageOrVideo}
-              >
-                <Slide
-                  image={imageOrVideo}
-                  active={activeImageIndex === index}
-                />
-              </div>
-            ))}
+        <div className={styles.topBar}>
+          <span
+            className={styles.counter}
+          >{`${imageIndex + 1} / ${images.length}`}</span>
+          <button
+            type="button"
+            className={styles.closeButton}
+            onClick={handleClose}
+          >
+            close
+          </button>
+        </div>
+        <div className={styles.navigationButtons}>
+          <div
+            className={cx(styles.navigationButton, {
+              [styles.disable]: imageIndex - 1 === -1,
+              [styles.hide]: images.length === 1,
+            })}
+            onClick={prevImage}
+          >
+            <ArrowLeft />
+          </div>
+          <div
+            className={cx(styles.navigationButton, {
+              [styles.disable]: imageIndex + 1 === images.length,
+              [styles.hide]: images.length === 1,
+            })}
+            onClick={nextImage}
+          >
+            <ArrowRight />
           </div>
         </div>
+        {/* Empty div so that the above one is centered in flex */}
+        <div></div>
+      </div>
+      <div className={styles.swipeContainer} ref={slideContainerRef}>
+        {images.map((image, index) => (
+          <div
+            className={styles.slide}
+            ref={slideRefs.current[index]}
+            data-index={index}
+            key={image}
+          >
+            <Slide image={image} active={activeImageIndex === index} />
+          </div>
+        ))}
       </div>
     </div>
   );

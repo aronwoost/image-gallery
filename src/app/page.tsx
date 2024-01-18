@@ -53,8 +53,8 @@ export default function Home() {
         />
       )}
       <p>
-        This Image Gallery works well on desktop and mobile (try all the
-        gestures you know from you mobile device), has no external dependencies
+        This Image Gallery is optimized both for desktop and mobile (try all the
+        gestures you know from your mobile device), has no external dependencies
         (small file size), uses modern CSS/JS (very performant) and has
         generally little code (less code = less to maintain).
       </p>
@@ -63,8 +63,8 @@ export default function Home() {
         <li>swipe-left/swipe-right to navigate</li>
         <li>pinch-zoom</li>
         <li>swipe-up/swipe-down to close</li>
-        <li>double-tab to zoom</li>
         <li>pinch-small to close</li>
+        <li>double-tab to zoom</li>
         <li>key navigation</li>
       </ul>
       <footer>

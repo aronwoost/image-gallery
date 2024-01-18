@@ -51,10 +51,6 @@
   padding: 12px calc(env(safe-area-inset-right) + 16px) 12px
     calc(env(safe-area-inset-left) + 16px);
   pointer-events: none;
-
-  @media (width >= 1200px) {
-    position: static;
-  }
 }
 
 .counter {
@@ -89,25 +85,9 @@
 }
 
 .component {
-  display: flex;
-  min-height: 1px;
-  flex: 1 1 100%;
-}
-
-.bigImageArea {
   position: relative;
-  height: 100%;
   flex: 1 1 100%;
-
-  @media (width >= 1200px) {
-    margin-left: 1.5rem;
-  }
-}
-
-.oneImage {
-  @media (width >= 1200px) {
-    margin-right: 1.5rem;
-  }
+  height: 100%;
 }
 
 .swipeContainer {

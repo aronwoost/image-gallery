@@ -2,6 +2,7 @@
 
 import './global.css';
 
+import cx from 'classnames';
 import { useState } from 'react';
 
 import ImageGallery from './ImageGallery';
@@ -21,8 +22,10 @@ export default function Home() {
 
   return (
     <main>
+      <h1>Image Gallery</h1>
       <div className={styles.buttons}>
         <button
+          className={styles.button}
           type="button"
           onClick={() => {
             setImageIndex(0);
@@ -32,6 +35,7 @@ export default function Home() {
           Open Gallery
         </button>
         <button
+          className={cx(styles.button, styles.secondButton)}
           type="button"
           onClick={() => {
             setImageIndex(2);
@@ -48,6 +52,27 @@ export default function Home() {
           onClose={() => setGalleryOpen(false)}
         />
       )}
+      <p>
+        This Image Gallery works well on desktop and mobile (try all the
+        gestures you know from you mobile device), has no external dependencies
+        (small file size), uses modern CSS/JS (very performant) and has
+        generally little code (less code = less to maintain).
+      </p>
+      <h3>Features:</h3>
+      <ul>
+        <li>swipe-left/swipe-right to navigate</li>
+        <li>pinch-zoom</li>
+        <li>swipe-up/swipe-down to close</li>
+        <li>double-tab to zoom</li>
+        <li>pinch-small to close</li>
+        <li>key navigation</li>
+      </ul>
+      <footer>
+        Check sourcecode on{' '}
+        <a href="https://github.com/aronwoost/image-gallery" target="blank">
+          Github
+        </a>
+      </footer>
     </main>
   );
 }

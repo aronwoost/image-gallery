@@ -64,11 +64,18 @@ export default function Home() {
           <li>key navigation</li>
         </ul>
         <footer className={styles.footer}>
-          © 2024. Check sourcecode on{' '}
+          <span>© 2024. Check sourcecode on </span>
           <a href="https://github.com/aronwoost/image-gallery" target="blank">
             Github
           </a>
-          .
+          <span>. </span>
+          <a
+            href="https://www.lakedistrict.gov.uk/learning/freephotos"
+            target="blank"
+          >
+            Image Copyright
+          </a>
+          <span>.</span>
         </footer>
       </div>
     </main>

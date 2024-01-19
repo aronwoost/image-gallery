@@ -1,5 +1,11 @@
 .container {
   padding: 0 calc(env(safe-area-inset-right)) 0 calc(env(safe-area-inset-left));
+  display: flex;
+  justify-content: center;
+}
+
+.wrapper {
+  max-width: 450px;
 }
 
 .buttons {

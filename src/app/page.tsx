@@ -20,7 +20,7 @@ export default function Home() {
   const [displayedImageIndex, setDisplayedImageIndex] = useState(-1);
 
   return (
-    <main>
+    <main className={styles.container}>
       <h1>Image Gallery</h1>
       <div className={styles.buttons}>
         <button

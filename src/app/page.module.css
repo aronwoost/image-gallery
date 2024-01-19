@@ -1,3 +1,7 @@
+.container {
+  padding: 0 calc(env(safe-area-inset-right)) 0 calc(env(safe-area-inset-left));
+}
+
 .buttons {
   display: flex;
   flex-direction: column;

@@ -44,12 +44,15 @@ export default function Home() {
           onImageChange={(index) => setDisplayedImageIndex(index)}
         />
       )}
-      <p>
-        This Image Gallery is optimized both for desktop and mobile (try all the
-        gestures you know from your mobile device), has no external dependencies
-        (small file size), uses modern CSS/JS (very performant) and has
-        generally little code (less code = less to maintain).
-      </p>
+      <h3>Highlights:</h3>
+      <ul>
+        <li>
+          Optimized for desktop and mobile (try all the gestures you know from
+          your mobile device)
+        </li>
+        <li>No external dependencies (small file size)</li>
+        <li>Uses modern JS/CSS (very performant)</li>
+      </ul>
       <h3>Features:</h3>
       <ul>
         <li>swipe-left/swipe-right to navigate</li>
@@ -59,11 +62,12 @@ export default function Home() {
         <li>double-tab to zoom</li>
         <li>key navigation</li>
       </ul>
-      <footer>
-        Check sourcecode on{' '}
+      <footer className={styles.footer}>
+        © 2024. Check sourcecode on{' '}
         <a href="https://github.com/aronwoost/image-gallery" target="blank">
           Github
         </a>
+        .
       </footer>
     </main>
   );

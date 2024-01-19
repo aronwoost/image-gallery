@@ -18,7 +18,6 @@ const IMAGES = [
 
 export default function Home() {
   const [galleryOpen, setGalleryOpen] = useState(false);
-  const [imageIndex, setImageIndex] = useState(0);
 
   return (
     <main>
@@ -27,27 +26,14 @@ export default function Home() {
         <button
           className={styles.button}
           type="button"
-          onClick={() => {
-            setImageIndex(0);
-            setGalleryOpen(true);
-          }}
+          onClick={() => setGalleryOpen(true)}
         >
           Open Gallery
-        </button>
-        <button
-          className={cx(styles.button, styles.secondButton)}
-          type="button"
-          onClick={() => {
-            setImageIndex(2);
-            setGalleryOpen(true);
-          }}
-        >
-          Open Gallery with third image
         </button>
       </div>
       {galleryOpen && (
         <ImageGallery
-          index={imageIndex}
+          index={0}
           images={IMAGES}
           onClose={() => setGalleryOpen(false)}
         />

@@ -18,10 +18,12 @@ const ImageGallery = ({
   index: initialIndex = 0,
   images = [],
   onClose = () => {},
+  onImageChange = () => {},
 }: {
   index: number;
   images: string[];
   onClose: () => void;
+  onImageChange: (index: number) => void;
 }) => {
   // We maintain two image indexes. "imageIndex" is for displaying purposes,
   // like update the counter and toggle the prev/next button. "imageIndex"
@@ -82,6 +84,7 @@ const ImageGallery = ({
 
             setActiveImageIndex(index);
             setImageIndex(index);
+            onImageChange(index);
           }
 
           if (intersectionRatio > 0.55 && intersectionRatio < 1) {
@@ -93,6 +96,7 @@ const ImageGallery = ({
             // functionality is reseted/disabled
             setActiveImageIndex(-1);
             setImageIndex(index);
+            onImageChange(index);
           }
         });
       },
@@ -126,7 +130,7 @@ const ImageGallery = ({
         if (current) observer.unobserve(current);
       });
     };
-  }, [handleClose]);
+  }, [handleClose, onImageChange]);
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {

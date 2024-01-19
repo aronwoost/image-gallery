@@ -2,7 +2,6 @@
 
 import './global.css';
 
-import cx from 'classnames';
 import { useState } from 'react';
 
 import ImageGallery from './ImageGallery';
@@ -18,6 +17,7 @@ const IMAGES = [
 
 export default function Home() {
   const [galleryOpen, setGalleryOpen] = useState(false);
+  const [displayedImageIndex, setDisplayedImageIndex] = useState(-1);
 
   return (
     <main>
@@ -30,12 +30,18 @@ export default function Home() {
         >
           Open Gallery
         </button>
+        {displayedImageIndex !== -1 && (
+          <p className={styles.imageIndex}>
+            Last displayed image index: {displayedImageIndex}
+          </p>
+        )}
       </div>
       {galleryOpen && (
         <ImageGallery
           index={0}
           images={IMAGES}
           onClose={() => setGalleryOpen(false)}
+          onImageChange={(index) => setDisplayedImageIndex(index)}
         />
       )}
       <p>

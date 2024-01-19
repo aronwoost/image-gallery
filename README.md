@@ -1,1 +1,1 @@
-## Visit: [aronwoost.github.io/image-gallery/](https://aronwoost.github.io/image-gallery/)
+## Visit: [aronwoost.github.io/image-gallery](https://aronwoost.github.io/image-gallery/)

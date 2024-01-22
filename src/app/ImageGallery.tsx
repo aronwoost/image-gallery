@@ -15,7 +15,7 @@ import type { Image } from './types';
 
 const preventEvent = (event: Event) => event.preventDefault();
 
-export type ImageGalleryProps = {
+type ImageGalleryProps = {
   index: number;
   images: Image[];
   onClose: () => void;

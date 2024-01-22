@@ -4,9 +4,9 @@ import './global.css';
 
 import { useState } from 'react';
 
-import type { Image } from './image.type';
 import ImageGallery from './ImageGallery';
 import styles from './page.module.css';
+import type { Image } from './types';
 
 const IMAGES: Image[] = [
   { src: './image02.jpg', alt: 'Image' },

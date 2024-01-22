@@ -9,9 +9,9 @@ import React, {
 
 import ArrowLeft from './ArrowLeft';
 import ArrowRight from './ArrowRight';
-import type { Image } from './image.type';
 import styles from './ImageGallery.module.css';
 import Slide from './Slide';
+import type { Image } from './types';
 
 const preventEvent = (event: Event) => event.preventDefault();
 

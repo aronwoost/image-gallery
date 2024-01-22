@@ -1,8 +1,8 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 
-import type { Image } from './image.type';
 import PinchZoom from './pinchzoom';
 import styles from './Slide.module.css';
+import type { Image } from './types';
 
 const Slide = ({ image, active }: { image: Image; active: boolean }) => {
   const [imageLoaded, setImageLoaded] = useState(false);

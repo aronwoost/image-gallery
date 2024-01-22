@@ -2,8 +2,9 @@ import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 
 import PinchZoom from './pinchzoom';
 import styles from './Slide.module.css';
+import type { Image } from './types';
 
-const Slide = ({ image, active }: { image: string; active: boolean }) => {
+const Slide = ({ image, active }: { image: Image; active: boolean }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
 
   const ref = useRef<HTMLDivElement | null>(null);
@@ -55,11 +56,11 @@ const Slide = ({ image, active }: { image: string; active: boolean }) => {
       <div className={styles.pinchZoom}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={image}
+          src={image.src}
           className={styles.image}
           loading="lazy"
           onLoad={() => setImageLoaded(true)}
-          alt="image"
+          alt={image.alt}
         />
       </div>
     </div>

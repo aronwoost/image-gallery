@@ -11,20 +11,23 @@ import ArrowLeft from './ArrowLeft';
 import ArrowRight from './ArrowRight';
 import styles from './ImageGallery.module.css';
 import Slide from './Slide';
+import type { Image } from './types';
 
 const preventEvent = (event: Event) => event.preventDefault();
 
-const ImageGallery = ({
-  index: initialIndex = 0,
-  images = [],
-  onClose = () => {},
-  onImageChange = () => {},
-}: {
+type ImageGalleryProps = {
   index: number;
-  images: string[];
+  images: Image[];
   onClose: () => void;
   onImageChange: (index: number) => void;
-}) => {
+};
+
+const ImageGallery = ({
+  index: initialIndex = 0,
+  images,
+  onClose,
+  onImageChange,
+}: ImageGalleryProps) => {
   // We maintain two image indexes. "imageIndex" is for displaying purposes,
   // like update the counter and toggle the prev/next button. "imageIndex"
   // updates fast. "activeImageIndex" is used to determine which slide is
@@ -252,7 +255,7 @@ const ImageGallery = ({
             className={styles.slide}
             ref={slideRefs.current[index]}
             data-index={index}
-            key={image}
+            key={image.src}
           >
             <Slide image={image} active={activeImageIndex === index} />
           </div>

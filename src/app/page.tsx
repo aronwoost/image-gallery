@@ -6,13 +6,29 @@ import { useState } from 'react';
 
 import ImageGallery from './ImageGallery';
 import styles from './page.module.css';
+import type { Image } from './types';
 
-const IMAGES = [
-  './image02.jpg',
-  './image03.jpg',
-  './image04.jpg',
-  './image05.jpg',
-  './image06.jpg',
+const IMAGES: Image[] = [
+  {
+    src: './image02.jpg',
+    alt: 'Lake District National Park, Buttermere, https://www.lakedistrict.gov.uk/learning/freephotos',
+  },
+  {
+    src: './image03.jpg',
+    alt: 'Lake District National Park, Buttermere, https://www.lakedistrict.gov.uk/learning/freephotos',
+  },
+  {
+    src: './image04.jpg',
+    alt: 'Lake District National Park, Buttermere, https://www.lakedistrict.gov.uk/learning/freephotos',
+  },
+  {
+    src: './image05.jpg',
+    alt: 'Lake District National Park, Buttermere, https://www.lakedistrict.gov.uk/learning/freephotos',
+  },
+  {
+    src: './image06.jpg',
+    alt: 'Lake District National Park, Buttermere, https://www.lakedistrict.gov.uk/learning/freephotos',
+  },
 ];
 
 export default function Home() {

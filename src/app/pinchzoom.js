@@ -98,7 +98,7 @@ class PinchZoom {
     // We have to listen for "pointerleave" instead of "pointerup" event. Reason
     // is Mobile Safari. In Mobile Safari there is no pointerup fired when the
     // user release it's fingers above the browser chrome (address bar and
-    // navigation bar at the bottom). Maybe this is fixed in iOS14.
+    // navigation bar at the bottom).
     this.element.addEventListener('pointerleave', this.onPointerUp);
     this.element.addEventListener('pointercancel', this.onPointerCancel);
 

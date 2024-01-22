@@ -4,15 +4,16 @@ import './global.css';
 
 import { useState } from 'react';
 
+import type { Image } from './image.type';
 import ImageGallery from './ImageGallery';
 import styles from './page.module.css';
 
-const IMAGES = [
-  './image02.jpg',
-  './image03.jpg',
-  './image04.jpg',
-  './image05.jpg',
-  './image06.jpg',
+const IMAGES: Image[] = [
+  { src: './image02.jpg', alt: 'Image' },
+  { src: './image03.jpg', alt: 'Image' },
+  { src: './image04.jpg', alt: 'Image' },
+  { src: './image05.jpg', alt: 'Image' },
+  { src: './image06.jpg', alt: 'Image' },
 ];
 
 export default function Home() {

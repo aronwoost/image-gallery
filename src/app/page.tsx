@@ -9,11 +9,26 @@ import styles from './page.module.css';
 import type { Image } from './types';
 
 const IMAGES: Image[] = [
-  { src: './image02.jpg', alt: 'Image' },
-  { src: './image03.jpg', alt: 'Image' },
-  { src: './image04.jpg', alt: 'Image' },
-  { src: './image05.jpg', alt: 'Image' },
-  { src: './image06.jpg', alt: 'Image' },
+  {
+    src: './image02.jpg',
+    alt: 'Lake District National Park, Buttermere, https://www.lakedistrict.gov.uk/learning/freephotos',
+  },
+  {
+    src: './image03.jpg',
+    alt: 'Lake District National Park, Buttermere, https://www.lakedistrict.gov.uk/learning/freephotos',
+  },
+  {
+    src: './image04.jpg',
+    alt: 'Lake District National Park, Buttermere, https://www.lakedistrict.gov.uk/learning/freephotos',
+  },
+  {
+    src: './image05.jpg',
+    alt: 'Lake District National Park, Buttermere, https://www.lakedistrict.gov.uk/learning/freephotos',
+  },
+  {
+    src: './image06.jpg',
+    alt: 'Lake District National Park, Buttermere, https://www.lakedistrict.gov.uk/learning/freephotos',
+  },
 ];
 
 export default function Home() {

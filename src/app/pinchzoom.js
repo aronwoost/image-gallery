@@ -37,6 +37,7 @@ const createMatrix = () => getSVG().createSVGMatrix();
 const MIN_SCALE = 0.1;
 const Y_DISTANCE_THRESHOLD = 30;
 const Y_DISTANCE_TO_CLOSE = 100;
+const ZOOM_ON_DOUBLE_TAP_FACTOR = 3;
 
 class PinchZoom {
   constructor(element) {
@@ -165,9 +166,17 @@ class PinchZoom {
       } else {
         // image is not zoomed in, so we zoom in
         this.setTransform({
-          x: -(viewportBounds.width / 2),
-          y: -(viewportBounds.height / 2),
-          scale: 2,
+          x: -(
+            (viewportBounds.width * ZOOM_ON_DOUBLE_TAP_FACTOR -
+              viewportBounds.width) /
+            2
+          ),
+          y: -(
+            (viewportBounds.height * ZOOM_ON_DOUBLE_TAP_FACTOR -
+              viewportBounds.height) /
+            2
+          ),
+          scale: ZOOM_ON_DOUBLE_TAP_FACTOR,
           animate: true,
         });
       }

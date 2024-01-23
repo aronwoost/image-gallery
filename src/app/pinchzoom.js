@@ -200,7 +200,7 @@ class PinchZoom {
       if (currentImageWidth < viewportBounds.width) {
         // image was not scaled horizontally beyond viewport width, so we just
         // center it
-        newX = -(viewportBounds.width / 2);
+        newX = -((transformBounds.width - viewportBounds.width) / 2);
       } else if (topLeft.x > 0) {
         // move to left edge
         newX -= topLeft.x;
@@ -212,7 +212,7 @@ class PinchZoom {
       if (currentImageHeight < viewportBounds.height) {
         // image was not scaled vertically beyond viewport height, so we just
         // center it
-        newY = -(viewportBounds.height / 2);
+        newY = -((transformBounds.height - viewportBounds.height) / 2);
       } else if (topLeft.y > 0) {
         // move to upper edge
         newY -= topLeft.y;

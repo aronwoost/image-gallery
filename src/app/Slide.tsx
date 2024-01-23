@@ -56,9 +56,9 @@ const Slide = ({ image, active }: { image: Image; active: boolean }) => {
       <div className={styles.pinchZoom}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
+          loading="lazy"
           src={image.src}
           className={styles.image}
-          loading="lazy"
           onLoad={() => setImageLoaded(true)}
           alt={image.alt}
         />

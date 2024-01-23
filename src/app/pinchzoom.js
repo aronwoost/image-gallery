@@ -172,8 +172,8 @@ class PinchZoom {
       // reset scale/position
       this.setTransform({ x: 0, y: 0, scale: 1, animate: true });
     } else if (this.pointerDidMove === true) {
-      // The image is scaled up. Let's see if we need to snap the image to the
-      // edges or center it.
+      // The image is scaled up and was moved. Let's see if we need to snap the
+      // image to the edges or center it.
       const transformBounds = this.transformElement.getBoundingClientRect();
 
       const currentImageWidth = this.imageWidth * this.scale;
@@ -184,14 +184,11 @@ class PinchZoom {
       const imageXOffset = (transformBounds.width - currentImageWidth) / 2;
       const imageYOffset = (transformBounds.height - currentImageHeight) / 2;
 
-      const topLeft = {
-        x: transformBounds.left + imageXOffset,
-        y: transformBounds.top + imageYOffset,
-      };
-
-      const bottomRight = {
-        x: transformBounds.width + transformBounds.left - imageXOffset,
-        y: transformBounds.height + transformBounds.top - imageYOffset,
+      const imageRectRelative = {
+        top: transformBounds.top + imageYOffset,
+        left: transformBounds.left + imageXOffset,
+        right: transformBounds.width + transformBounds.left - imageXOffset,
+        bottom: transformBounds.height + transformBounds.top - imageYOffset,
       };
 
       let newX = this.x;
@@ -201,24 +198,24 @@ class PinchZoom {
         // image was not scaled horizontally beyond viewport width, so we just
         // center it
         newX = -((transformBounds.width - viewportBounds.width) / 2);
-      } else if (topLeft.x > 0) {
+      } else if (imageRectRelative.left > 0) {
         // move to left edge
-        newX -= topLeft.x;
-      } else if (bottomRight.x < viewportBounds.width) {
+        newX = -imageXOffset;
+      } else if (imageRectRelative.right < viewportBounds.width) {
         // move to right edge
-        newX += viewportBounds.width - bottomRight.x;
+        newX = -(imageXOffset + currentImageWidth - viewportBounds.width);
       }
 
       if (currentImageHeight < viewportBounds.height) {
         // image was not scaled vertically beyond viewport height, so we just
         // center it
         newY = -((transformBounds.height - viewportBounds.height) / 2);
-      } else if (topLeft.y > 0) {
+      } else if (imageRectRelative.top > 0) {
         // move to upper edge
-        newY -= topLeft.y;
-      } else if (bottomRight.y < viewportBounds.height) {
+        newY = -imageYOffset;
+      } else if (imageRectRelative.bottom < viewportBounds.height) {
         // move to bottom edge
-        newY += viewportBounds.height - bottomRight.y;
+        newY = -(imageYOffset + currentImageHeight - viewportBounds.height);
       }
 
       this.setTransform({ x: newX, y: newY, animate: true });

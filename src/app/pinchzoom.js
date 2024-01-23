@@ -73,6 +73,8 @@ class PinchZoom {
 
     // eslint-disable-next-line
     this.transformElement = this.element.children[0];
+
+    this.pointerDidMove = false;
   }
 
   reset() {
@@ -119,6 +121,8 @@ class PinchZoom {
 
     const onlyAllowVerticalScroll =
       this.scale <= 1 && this.currentPointers.length === 1;
+
+    this.pointerDidMove = true;
 
     return this._onPointerMove(
       previousPointers,
@@ -167,7 +171,7 @@ class PinchZoom {
     } else if (this.scale < 1.1) {
       // reset scale/position
       this.setTransform({ x: 0, y: 0, scale: 1, animate: true });
-    } else {
+    } else if (this.pointerDidMove === true) {
       // The image is scaled up. Let's see if we need to snap the image to the
       // edges or center it.
       const transformBounds = this.transformElement.getBoundingClientRect();
@@ -235,6 +239,7 @@ class PinchZoom {
     }
 
     this.isMultiplePointer = false;
+    this.pointerDidMove = false;
 
     this.element.releasePointerCapture(event.pointerId);
     this.element.removeEventListener('pointermove', this.onPointerMove);

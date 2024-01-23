@@ -154,14 +154,23 @@ class PinchZoom {
       (yDistance - Y_DISTANCE_THRESHOLD) / Y_DISTANCE_TO_CLOSE;
 
     if (wasDoubleTap) {
-      // zoom in or out depending on current zoom
-      const zoomIn = this.scale < 1.1;
-      this.setTransform({
-        x: zoomIn ? -(viewportBounds.width / 2) : 0,
-        y: zoomIn ? -(viewportBounds.height / 2) : 0,
-        scale: zoomIn ? 2 : 1,
-        animate: true,
-      });
+      if (this.scale > 1.1) {
+        // image is zoomed in, so we reset it
+        this.setTransform({
+          x: 0,
+          y: 0,
+          scale: 1,
+          animate: true,
+        });
+      } else {
+        // image is not zoomed in, so we zoom in
+        this.setTransform({
+          x: -(viewportBounds.width / 2),
+          y: -(viewportBounds.height / 2),
+          scale: 2,
+          animate: true,
+        });
+      }
     } else if (this.scale === 1 && closePercentage >= 1) {
       // close gallery of image was dragged up/down over a threshold
       this.element.dispatchEvent(new Event('close', { bubbles: true }));

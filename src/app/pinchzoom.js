@@ -197,16 +197,24 @@ class PinchZoom {
       const currentImageWidth = this.imageWidth * this.scale;
       const currentImageHeight = this.imageHeight * this.scale;
 
-      // Calculate offsets of the image taking into account that we do
-      // object-fit: contain
-      const imageXOffset = (transformBounds.width - currentImageWidth) / 2;
-      const imageYOffset = (transformBounds.height - currentImageHeight) / 2;
+      const imageRect = {
+        top: (transformBounds.height - currentImageHeight) / 2,
+        left: (transformBounds.width - currentImageWidth) / 2,
+        right:
+          (transformBounds.width - currentImageWidth) / 2 +
+          currentImageWidth -
+          viewportBounds.width,
+        bottom:
+          (transformBounds.height - currentImageHeight) / 2 +
+          currentImageHeight -
+          viewportBounds.height,
+      };
 
       const imageRectRelative = {
-        top: transformBounds.top + imageYOffset,
-        left: transformBounds.left + imageXOffset,
-        right: transformBounds.width + transformBounds.left - imageXOffset,
-        bottom: transformBounds.height + transformBounds.top - imageYOffset,
+        top: transformBounds.top + imageRect.top,
+        left: transformBounds.left + imageRect.left,
+        right: transformBounds.width + transformBounds.left - imageRect.left,
+        bottom: transformBounds.height + transformBounds.top - imageRect.top,
       };
 
       let newX = this.x;
@@ -218,10 +226,10 @@ class PinchZoom {
         newX = -((transformBounds.width - viewportBounds.width) / 2);
       } else if (imageRectRelative.left > 0) {
         // move to left edge
-        newX = -imageXOffset;
+        newX = -imageRect.left;
       } else if (imageRectRelative.right < viewportBounds.width) {
         // move to right edge
-        newX = -(imageXOffset + currentImageWidth - viewportBounds.width);
+        newX = -imageRect.right;
       }
 
       if (currentImageHeight < viewportBounds.height) {
@@ -230,10 +238,10 @@ class PinchZoom {
         newY = -((transformBounds.height - viewportBounds.height) / 2);
       } else if (imageRectRelative.top > 0) {
         // move to upper edge
-        newY = -imageYOffset;
+        newY = -imageRect.top;
       } else if (imageRectRelative.bottom < viewportBounds.height) {
         // move to bottom edge
-        newY = -(imageYOffset + currentImageHeight - viewportBounds.height);
+        newY = -imageRect.bottom;
       }
 
       this.setTransform({ x: newX, y: newY, animate: true });

@@ -200,14 +200,8 @@ class PinchZoom {
       const imageRect = {
         top: (transformBounds.height - currentImageHeight) / 2,
         left: (transformBounds.width - currentImageWidth) / 2,
-        right:
-          (transformBounds.width - currentImageWidth) / 2 +
-          currentImageWidth -
-          viewportBounds.width,
-        bottom:
-          (transformBounds.height - currentImageHeight) / 2 +
-          currentImageHeight -
-          viewportBounds.height,
+        width: currentImageWidth,
+        height: currentImageHeight,
       };
 
       const imageRectRelative = {
@@ -220,7 +214,7 @@ class PinchZoom {
       let newX = this.x;
       let newY = this.y;
 
-      if (currentImageWidth < viewportBounds.width) {
+      if (imageRect.width < viewportBounds.width) {
         // image was not scaled horizontally beyond viewport width, so we just
         // center it
         newX = -((transformBounds.width - viewportBounds.width) / 2);
@@ -229,10 +223,10 @@ class PinchZoom {
         newX = -imageRect.left;
       } else if (imageRectRelative.right < viewportBounds.width) {
         // move to right edge
-        newX = -imageRect.right;
+        newX = -(imageRect.left + imageRect.width - viewportBounds.width);
       }
 
-      if (currentImageHeight < viewportBounds.height) {
+      if (imageRect.height < viewportBounds.height) {
         // image was not scaled vertically beyond viewport height, so we just
         // center it
         newY = -((transformBounds.height - viewportBounds.height) / 2);
@@ -241,7 +235,7 @@ class PinchZoom {
         newY = -imageRect.top;
       } else if (imageRectRelative.bottom < viewportBounds.height) {
         // move to bottom edge
-        newY = -imageRect.bottom;
+        newY = -(imageRect.top + imageRect.height - viewportBounds.height);
       }
 
       this.setTransform({ x: newX, y: newY, animate: true });

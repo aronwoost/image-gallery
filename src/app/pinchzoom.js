@@ -191,25 +191,15 @@ class PinchZoom {
           1
         );
 
-        const zoomedImageWidth = this.imageWidth * ZOOM_ON_DOUBLE_TAP_FACTOR;
-        const zoomedImageHeight = this.imageHeight * ZOOM_ON_DOUBLE_TAP_FACTOR;
-
-        const imageXOffsetZoomed =
-          (viewportBounds.width * ZOOM_ON_DOUBLE_TAP_FACTOR -
-            zoomedImageWidth) /
-          2;
-        const imageYOffsetZoomed =
-          (viewportBounds.height * ZOOM_ON_DOUBLE_TAP_FACTOR -
-            zoomedImageHeight) /
-          2;
+        const imageRect = this._getImageRect(ZOOM_ON_DOUBLE_TAP_FACTOR);
 
         let newX = -(
-          imageXOffsetZoomed +
-          (zoomedImageWidth - viewportBounds.width) * percentX
+          imageRect.left +
+          (imageRect.width - viewportBounds.width) * percentX
         );
         let newY = -(
-          imageYOffsetZoomed +
-          (zoomedImageHeight - viewportBounds.height) * percentY
+          imageRect.top +
+          (imageRect.height - viewportBounds.height) * percentY
         );
 
         const centerX = -(
@@ -222,11 +212,11 @@ class PinchZoom {
           2
         );
 
-        if (zoomedImageWidth < viewportBounds.width) {
+        if (imageRect.width < viewportBounds.width) {
           newX = centerX;
         }
 
-        if (zoomedImageHeight < viewportBounds.height) {
+        if (imageRect.height < viewportBounds.height) {
           newY = centerY;
         }
 
@@ -251,17 +241,7 @@ class PinchZoom {
       // image to the edges or center it.
       const transformBounds = this.transformElement.getBoundingClientRect();
 
-      const currentImageWidth = this.imageWidth * this.scale;
-      const currentImageHeight = this.imageHeight * this.scale;
-
-      const imageRect = {
-        top: (transformBounds.height - currentImageHeight) / 2,
-        left: (transformBounds.width - currentImageWidth) / 2,
-        width: currentImageWidth,
-        height: currentImageHeight,
-      };
-
-      console.log({ imageRect });
+      const imageRect = _getImageRect(this.scale);
 
       const imageRectRelative = {
         top: transformBounds.top + imageRect.top,
@@ -323,6 +303,20 @@ class PinchZoom {
     this.element.removeEventListener('pointercancel', this.onPointerCancel);
 
     this.element.dispatchEvent(new Event('pinchingEnded', { bubbles: true }));
+  }
+
+  _getImageRect(scale) {
+    const viewportBounds = this.element.getBoundingClientRect();
+
+    const currentImageWidth = this.imageWidth * scale;
+    const currentImageHeight = this.imageHeight * scale;
+
+    return {
+      top: (viewportBounds.height * scale - currentImageHeight) / 2,
+      left: (viewportBounds.width * scale - currentImageWidth) / 2,
+      width: currentImageWidth,
+      height: currentImageHeight,
+    };
   }
 
   onPointerCancel() {

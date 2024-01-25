@@ -168,28 +168,20 @@ class PinchZoom {
 
         // Calculate normalized value (0 to 1) of where inside the image the
         // user double tapped. Very left would be 0, very right would be 1.
-        // blankSpaceX and deltaX are needed to account for images, that do not
+        // offsetX and deltaX are needed to account for images, that do not
         // fill the whole viewport width.
-        const blankSpaceX = (viewportBounds.width - this.imageWidth) / 2;
+        const offsetX = (viewportBounds.width - this.imageWidth) / 2;
         const deltaX = viewportBounds.width / this.imageWidth;
-        const percentX = Math.min(
-          Math.max(
-            ((pointer.clientX - blankSpaceX) / viewportBounds.width) * deltaX,
-            0
-          ),
-          1
-        );
+        const pointerCleanX =
+          ((pointer.clientX - offsetX) / viewportBounds.width) * deltaX;
+        const percentX = Math.min(Math.max(0, pointerCleanX), 1);
 
         // Same for vertical.
-        const blankSpaceY = (viewportBounds.height - this.imageHeight) / 2;
+        const offsetY = (viewportBounds.height - this.imageHeight) / 2;
         const deltaY = viewportBounds.height / this.imageHeight;
-        const percentY = Math.min(
-          Math.max(
-            ((pointer.clientY - blankSpaceY) / viewportBounds.height) * deltaY,
-            0
-          ),
-          1
-        );
+        const pointerCleanY =
+          ((pointer.clientY - offsetY) / viewportBounds.height) * deltaY;
+        const percentY = Math.min(Math.max(pointerCleanY, 0), 1);
 
         const imageRect = this._getImageRect(ZOOM_ON_DOUBLE_TAP_FACTOR);
 

@@ -165,17 +165,74 @@ class PinchZoom {
         });
       } else {
         // image is not zoomed in, so we zoom in
+
+        // Calculate normalized value (0 to 1) of where inside the image the
+        // user double tapped. Very left would be 0, very right would be 1.
+        // blankSpaceX and deltaX are needed to account for images, that do not
+        // fill the whole viewport width.
+        const blankSpaceX = (viewportBounds.width - this.imageWidth) / 2;
+        const deltaX = viewportBounds.width / this.imageWidth;
+        const percentX = Math.min(
+          Math.max(
+            ((pointer.clientX - blankSpaceX) / viewportBounds.width) * deltaX,
+            0
+          ),
+          1
+        );
+
+        // Same for vertical.
+        const blankSpaceY = (viewportBounds.height - this.imageHeight) / 2;
+        const deltaY = viewportBounds.height / this.imageHeight;
+        const percentY = Math.min(
+          Math.max(
+            ((pointer.clientY - blankSpaceY) / viewportBounds.height) * deltaY,
+            0
+          ),
+          1
+        );
+
+        const zoomedImageWidth = this.imageWidth * ZOOM_ON_DOUBLE_TAP_FACTOR;
+        const zoomedImageHeight = this.imageHeight * ZOOM_ON_DOUBLE_TAP_FACTOR;
+
+        const imageXOffsetZoomed =
+          (viewportBounds.width * ZOOM_ON_DOUBLE_TAP_FACTOR -
+            zoomedImageWidth) /
+          2;
+        const imageYOffsetZoomed =
+          (viewportBounds.height * ZOOM_ON_DOUBLE_TAP_FACTOR -
+            zoomedImageHeight) /
+          2;
+
+        let newX = -(
+          imageXOffsetZoomed +
+          (zoomedImageWidth - viewportBounds.width) * percentX
+        );
+        let newY = -(
+          imageYOffsetZoomed +
+          (zoomedImageHeight - viewportBounds.height) * percentY
+        );
+
+        const centerX = -(
+          (viewportBounds.width * (ZOOM_ON_DOUBLE_TAP_FACTOR - 1)) /
+          2
+        );
+
+        const centerY = -(
+          (viewportBounds.height * (ZOOM_ON_DOUBLE_TAP_FACTOR - 1)) /
+          2
+        );
+
+        if (zoomedImageWidth < viewportBounds.width) {
+          newX = centerX;
+        }
+
+        if (zoomedImageHeight < viewportBounds.height) {
+          newY = centerY;
+        }
+
         this.setTransform({
-          x: -(
-            (viewportBounds.width * ZOOM_ON_DOUBLE_TAP_FACTOR -
-              viewportBounds.width) /
-            2
-          ),
-          y: -(
-            (viewportBounds.height * ZOOM_ON_DOUBLE_TAP_FACTOR -
-              viewportBounds.height) /
-            2
-          ),
+          x: newX,
+          y: newY,
           scale: ZOOM_ON_DOUBLE_TAP_FACTOR,
           animate: true,
         });
@@ -203,6 +260,8 @@ class PinchZoom {
         width: currentImageWidth,
         height: currentImageHeight,
       };
+
+      console.log({ imageRect });
 
       const imageRectRelative = {
         top: transformBounds.top + imageRect.top,

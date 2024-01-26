@@ -236,7 +236,7 @@ class PinchZoom {
       // image to the edges or center it.
       const transformBounds = this.transformElement.getBoundingClientRect();
 
-      const imageRect = _getImageRect(this.scale);
+      const imageRect = this._getImageRect(this.scale);
 
       const imageRectRelative = {
         top: transformBounds.top + imageRect.top,

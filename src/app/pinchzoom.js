@@ -37,6 +37,7 @@ const createMatrix = () => getSVG().createSVGMatrix();
 const MIN_SCALE = 0.1;
 const Y_DISTANCE_THRESHOLD = 30;
 const Y_DISTANCE_TO_CLOSE = 100;
+const ZOOM_ON_DOUBLE_TAP_FACTOR = 3;
 
 class PinchZoom {
   constructor(element) {
@@ -154,14 +155,73 @@ class PinchZoom {
       (yDistance - Y_DISTANCE_THRESHOLD) / Y_DISTANCE_TO_CLOSE;
 
     if (wasDoubleTap) {
-      // zoom in or out depending on current zoom
-      const zoomIn = this.scale < 1.1;
-      this.setTransform({
-        x: zoomIn ? -(viewportBounds.width / 2) : 0,
-        y: zoomIn ? -(viewportBounds.height / 2) : 0,
-        scale: zoomIn ? 2 : 1,
-        animate: true,
-      });
+      if (this.scale > 1.1) {
+        // image is zoomed in, so we reset it
+        this.setTransform({
+          x: 0,
+          y: 0,
+          scale: 1,
+          animate: true,
+        });
+      } else {
+        // image is not zoomed in, so we zoom in
+
+        // Calculate normalized value (0 to 1) of where inside the image the
+        // user double tapped. Very left would be 0, very right would be 1.
+        // offsetX and deltaX are needed to account for images, that do not
+        // fill the whole viewport width.
+        const offsetX = (viewportBounds.width - this.imageWidth) / 2;
+        const deltaX = viewportBounds.width / this.imageWidth;
+        const pointerCleanX =
+          ((pointer.clientX - offsetX) / viewportBounds.width) * deltaX;
+        const percentX = Math.min(Math.max(0, pointerCleanX), 1);
+
+        // Same for vertical.
+        const offsetY = (viewportBounds.height - this.imageHeight) / 2;
+        const deltaY = viewportBounds.height / this.imageHeight;
+        const pointerCleanY =
+          ((pointer.clientY - offsetY) / viewportBounds.height) * deltaY;
+        const percentY = Math.min(Math.max(pointerCleanY, 0), 1);
+
+        const imageRect = this._getImageRect(ZOOM_ON_DOUBLE_TAP_FACTOR);
+
+        let newX = -(
+          imageRect.left +
+          (imageRect.width - viewportBounds.width) * percentX
+        );
+        let newY = -(
+          imageRect.top +
+          (imageRect.height - viewportBounds.height) * percentY
+        );
+
+        const centerX = -(
+          (viewportBounds.width * (ZOOM_ON_DOUBLE_TAP_FACTOR - 1)) /
+          2
+        );
+
+        const centerY = -(
+          (viewportBounds.height * (ZOOM_ON_DOUBLE_TAP_FACTOR - 1)) /
+          2
+        );
+
+        // Zoomed image does not scale horizontally beyond viewport width, so
+        // we just center it.
+        if (imageRect.width < viewportBounds.width) {
+          newX = centerX;
+        }
+
+        // Same for vertical.
+        if (imageRect.height < viewportBounds.height) {
+          newY = centerY;
+        }
+
+        this.setTransform({
+          x: newX,
+          y: newY,
+          scale: ZOOM_ON_DOUBLE_TAP_FACTOR,
+          animate: true,
+        });
+      }
     } else if (this.scale === 1 && closePercentage >= 1) {
       // close gallery of image was dragged up/down over a threshold
       this.element.dispatchEvent(new Event('close', { bubbles: true }));
@@ -176,46 +236,40 @@ class PinchZoom {
       // image to the edges or center it.
       const transformBounds = this.transformElement.getBoundingClientRect();
 
-      const currentImageWidth = this.imageWidth * this.scale;
-      const currentImageHeight = this.imageHeight * this.scale;
-
-      // Calculate offsets of the image taking into account that we do
-      // object-fit: contain
-      const imageXOffset = (transformBounds.width - currentImageWidth) / 2;
-      const imageYOffset = (transformBounds.height - currentImageHeight) / 2;
+      const imageRect = _getImageRect(this.scale);
 
       const imageRectRelative = {
-        top: transformBounds.top + imageYOffset,
-        left: transformBounds.left + imageXOffset,
-        right: transformBounds.width + transformBounds.left - imageXOffset,
-        bottom: transformBounds.height + transformBounds.top - imageYOffset,
+        top: transformBounds.top + imageRect.top,
+        left: transformBounds.left + imageRect.left,
+        right: transformBounds.width + transformBounds.left - imageRect.left,
+        bottom: transformBounds.height + transformBounds.top - imageRect.top,
       };
 
       let newX = this.x;
       let newY = this.y;
 
-      if (currentImageWidth < viewportBounds.width) {
+      if (imageRect.width < viewportBounds.width) {
         // image was not scaled horizontally beyond viewport width, so we just
         // center it
         newX = -((transformBounds.width - viewportBounds.width) / 2);
       } else if (imageRectRelative.left > 0) {
         // move to left edge
-        newX = -imageXOffset;
+        newX = -imageRect.left;
       } else if (imageRectRelative.right < viewportBounds.width) {
         // move to right edge
-        newX = -(imageXOffset + currentImageWidth - viewportBounds.width);
+        newX = -(imageRect.left + imageRect.width - viewportBounds.width);
       }
 
-      if (currentImageHeight < viewportBounds.height) {
+      if (imageRect.height < viewportBounds.height) {
         // image was not scaled vertically beyond viewport height, so we just
         // center it
         newY = -((transformBounds.height - viewportBounds.height) / 2);
       } else if (imageRectRelative.top > 0) {
         // move to upper edge
-        newY = -imageYOffset;
+        newY = -imageRect.top;
       } else if (imageRectRelative.bottom < viewportBounds.height) {
         // move to bottom edge
-        newY = -(imageYOffset + currentImageHeight - viewportBounds.height);
+        newY = -(imageRect.top + imageRect.height - viewportBounds.height);
       }
 
       this.setTransform({ x: newX, y: newY, animate: true });
@@ -244,6 +298,20 @@ class PinchZoom {
     this.element.removeEventListener('pointercancel', this.onPointerCancel);
 
     this.element.dispatchEvent(new Event('pinchingEnded', { bubbles: true }));
+  }
+
+  _getImageRect(scale) {
+    const viewportBounds = this.element.getBoundingClientRect();
+
+    const currentImageWidth = this.imageWidth * scale;
+    const currentImageHeight = this.imageHeight * scale;
+
+    return {
+      top: (viewportBounds.height * scale - currentImageHeight) / 2,
+      left: (viewportBounds.width * scale - currentImageWidth) / 2,
+      width: currentImageWidth,
+      height: currentImageHeight,
+    };
   }
 
   onPointerCancel() {

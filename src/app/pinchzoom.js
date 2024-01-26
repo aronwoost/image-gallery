@@ -204,10 +204,13 @@ class PinchZoom {
           2
         );
 
+        // Zoomed image does not scale horizontally beyond viewport width, so
+        // we just center it.
         if (imageRect.width < viewportBounds.width) {
           newX = centerX;
         }
 
+        // Same for vertical.
         if (imageRect.height < viewportBounds.height) {
           newY = centerY;
         }
